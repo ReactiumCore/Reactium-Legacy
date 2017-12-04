@@ -36,7 +36,7 @@ class Test extends Component {
     }
 
     componentDidMount() {
-        this.props.test.mount();
+        // this.props.test.mount();
     }
 
     componentWillReceiveProps(nextProps) {

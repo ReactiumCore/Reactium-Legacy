@@ -13,7 +13,6 @@ import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
-
 /**
  * -----------------------------------------------------------------------------
  * @description Redux setup

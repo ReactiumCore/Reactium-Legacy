@@ -3,7 +3,7 @@ import { services } from 'appdir/app';
 
 export default {
     test: {
-        mount: () => (dispatch) => {
+        mount: params => (dispatch) => {
             services.fetchHello().then((data) => {
                 dispatch({type: actionTypes.TEST_MOUNT, data: data});
             });
