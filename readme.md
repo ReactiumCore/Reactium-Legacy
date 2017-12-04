@@ -5,5 +5,5 @@ A framework for creating React + Redux apps using the domain driven design (DDD)
 
 # Quick Start
 ```
-> npm launch
+> npm run launch
 ```
