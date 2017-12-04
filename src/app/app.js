@@ -27,11 +27,11 @@ let serviceObj        = {};
 let initialState      = {};
 
 const components      = [];
-const reactify        = document.querySelectorAll('component');
+const elements        = document.querySelectorAll('component');
 
 
-if (reactify.length > 0) {
-    reactify.forEach((elm) => {
+if (elements.length > 0) {
+    elements.forEach((elm) => {
 
         let req, path, reducer, action, actionType, service;
         let cname = elm.getAttribute('type');
@@ -77,7 +77,7 @@ if (reactify.length > 0) {
             components.push({component: cmp, element: elm});
 
             // Get the reducers
-            try { reducer = require(path + '/reducers');} catch (err) {}
+            try { reducer = require(path + '/reducers'); } catch (err) {}
             if (reducer) {
                 if (reducer.hasOwnProperty('default')) {
                     reducer = reducer.default;

@@ -2154,10 +2154,10 @@ var serviceObj = {};
 var initialState = {};
 
 var components = [];
-var reactify = document.querySelectorAll('component');
+var elements = document.querySelectorAll('component');
 
-if (reactify.length > 0) {
-    reactify.forEach(function (elm) {
+if (elements.length > 0) {
+    elements.forEach(function (elm) {
 
         var req = void 0,
             path = void 0,
