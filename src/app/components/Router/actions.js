@@ -1,19 +1,21 @@
-import * as actions from './actionTypes';
+import { actionTypes } from 'appdir/app';
 
-export const updateRoute = (location, route, params) => (dispatch, getState) => {
-    const { Router } = getState();
+export default {
+    updateRoute: (location, route, params) => (dispatch, getState) => {
+        const { Router } = getState();
 
-    if ( Router.pathname !== location.pathname ) {
-        window.scrollTo(0,0);
-    }
+        if ( Router.pathname !== location.pathname ) {
+            window.scrollTo(0,0);
+        }
 
-    dispatch({
-        type: actions.UPDATE_ROUTE,
-        routing: location,
-    });
+        dispatch({
+            type: actionTypes.UPDATE_ROUTE,
+            routing: location,
+        });
 
-    // load route data
-    if ( route.hasOwnProperty('load') ) {
-        dispatch(route.load(params));
-    }
+        // load route data
+        if ( route.hasOwnProperty('load') ) {
+            dispatch(route.load(params));
+        }
+    },
 };

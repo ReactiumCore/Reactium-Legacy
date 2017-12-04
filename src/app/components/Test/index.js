@@ -23,8 +23,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, props) => ({
     test: {
-        mount: () => dispatch(actions.test.mount()),
-        click: () => dispatch(actions.test.click()),
+        mount: () => dispatch(actions.Test.mount()),
+        click: () => dispatch(actions.Test.click()),
     }
 });
 

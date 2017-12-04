@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { matchPath, withRouter } from 'react-router'
-import * as actions from './actions';
 import routes from './routes';
+
+import { actions } from 'appdir/app';
 
 class RouteObserver extends Component {
     /**
@@ -57,6 +58,6 @@ const mapStateToProps = ({Router = {
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateRoute: (location, route, params) => dispatch(actions.updateRoute(location, route, params)),
+    updateRoute: (location, route, params) => dispatch(actions.Router.updateRoute(location, route, params)),
 });
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RouteObserver));

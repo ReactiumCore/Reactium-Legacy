@@ -13,6 +13,12 @@ import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
+// babel-plugin-import-glob loaded imports, use with care
+import * as allActionTypes from 'glob:./components/**/actionTypes.js';
+import * as allActions from 'glob:./components/**/actions.js';
+import * as allReducers from 'glob:./components/**/reducers.js';
+import * as allServices from 'glob:./components/**/services.js';
+
 /**
  * -----------------------------------------------------------------------------
  * @description Redux setup
@@ -74,49 +80,29 @@ if (elements.length > 0) {
             // Create the React element and apply parameters
             let cmp = React.createElement(req);
             components.push({component: cmp, element: elm});
-
-            // Get the reducers
-            try { reducer = require(path + '/reducers'); } catch (err) {}
-            if (reducer) {
-                if (reducer.hasOwnProperty('default')) {
-                    reducer = reducer.default;
-                }
-
-                reducerObj[cname] = reducer;
-            }
-
-            // Get the actions
-            try { action = require(path + '/actions'); } catch (err) { }
-            if (action) {
-                if (action.hasOwnProperty('default')) {
-                    action = action.default;
-                }
-
-                actionObj = Object.assign({}, actionObj, {...action});
-            }
-
-            // Get the actionTypes
-            try { actionType = require(path + '/actionTypes'); } catch (err) { }
-            if (actionType) {
-                if (actionType.hasOwnProperty('default')) {
-                    actionType = actionType.default;
-                }
-
-                actionTypeObj = Object.assign({}, actionTypeObj, {...actionType});
-            }
-
-            // Get the services
-            try { service = require(path + '/services'); } catch (err) { }
-            if (service) {
-                if (service.hasOwnProperty('default')) {
-                    service = service.default;
-                }
-
-                serviceObj = Object.assign({}, serviceObj, {...service});
-            }
         }
     });
 }
+
+export const actions = {
+    ...allActions,
+};
+
+export const actionTypes = Object.keys(allActionTypes).reduce((types, key) => ({
+    ...types,
+    ...allActionTypes[key],
+}), {});
+
+
+export const services = {
+    ...allServices
+};
+
+export const restAPI = "http://demo3914762.mockable.io";
+
+export const restHeaders = () => {
+    return {};
+};
 
 
 /**
@@ -143,7 +129,7 @@ export const App = () => {
         let enhancer   = compose(applyMiddleware(...middleWare));
 
         // Combine reducers
-        let reducerArr = combineReducers({...reducerObj});
+        let reducerArr = combineReducers({...allReducers});
 
         // Create the store
         const store = createStore(reducerArr, initialState, enhancer);
@@ -158,22 +144,4 @@ export const App = () => {
             );
         });
     }
-};
-
-export const actions = {
-    ...actionObj
-};
-
-export const actionTypes = {
-    ...actionTypeObj
-};
-
-export const services = {
-    ...serviceObj
-};
-
-export const restAPI = "http://demo3914762.mockable.io";
-
-export const restHeaders = () => {
-    return {};
 };
