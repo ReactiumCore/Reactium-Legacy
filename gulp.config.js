@@ -36,6 +36,7 @@ module.exports = () => {
         entries: entries(),
         defines: {
             "global": "window",
+            allRoutes: JSON.stringify(globDefineFiles('src/app/components/**/route.js')),
             allActions: JSON.stringify(globDefineFiles('src/app/components/**/actions.js')),
             allActionTypes: JSON.stringify(globDefineFiles('src/app/components/**/actionTypes.js')),
             allServices: JSON.stringify(globDefineFiles('src/app/components/**/services.js')),

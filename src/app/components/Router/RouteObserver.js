@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { matchPath, withRouter } from 'react-router'
-import routes from './routes';
-import { actions } from 'appdir/app';
+import { actions, routes } from 'appdir/app';
 
 class RouteObserver extends Component {
     /**
@@ -14,7 +13,8 @@ class RouteObserver extends Component {
         const { location, Router, updateRoute } = this.props;
 
         if ( ! Router.pathname || location.pathname !== Router.pathname ) {
-            let [ route ] = routes.filter(route => {
+
+            let [ route ] = Object.entries(routes).filter(route => {
                 let match = matchPath(location.pathname, route);
                 return match && match.isExact;
             });

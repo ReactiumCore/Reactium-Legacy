@@ -104,6 +104,8 @@ export const actionTypes = Object.keys(importedActionTypes).reduce((types, key) 
 
 export const services = importDefined(allServices);
 
+export const routes = importDefined(allRoutes);
+
 export const restAPI = "http://demo3914762.mockable.io";
 
 export const restHeaders = () => {
