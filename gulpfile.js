@@ -7,6 +7,7 @@ const gulpif           = require('gulp-if');
 const webpack          = require('webpack');
 const runSequence      = require('run-sequence');
 const browserSync      = require('browser-sync');
+const spa              = require('browser-sync-spa');
 const prefix           = require('gulp-autoprefixer');
 const sass             = require('gulp-sass');
 const csso             = require('gulp-csso');
@@ -85,10 +86,23 @@ gulp.task('clean', (done) => {
 
 // Server locally
 gulp.task('serve', () => {
+    browserSync.use(spa({
+        history: {
+            index: '/index.html',
+            rewrites: [
+                {
+                    from: /^(?!\/assets)/,
+                    to: '/index.html',
+                },
+            ],
+        }
+    }));
+
     browserSync({
         notify: false,
         timestamps: true,
         server: path.resolve(config.dist),
+        startPath: 'index.html',
         port: config.port.browsersync,
         logPrefix: '00:00:00',
         ui: {port: config.port.browsersync + 1},
