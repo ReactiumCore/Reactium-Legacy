@@ -89,12 +89,6 @@ gulp.task('serve', () => {
     browserSync.use(spa({
         history: {
             index: '/index.html',
-            rewrites: [
-                {
-                    from: /^(?!\/assets)/,
-                    to: '/index.html',
-                },
-            ],
         }
     }));
 
@@ -106,6 +100,14 @@ gulp.task('serve', () => {
         port: config.port.browsersync,
         logPrefix: '00:00:00',
         ui: {port: config.port.browsersync + 1},
+        middleware: [
+            (req, res, next) => {
+                if ( /.html$/.test(req.url) && req.url !== '/index.html' ) {
+                    req.url = '/index.html';
+                }
+                next();
+            },
+        ],
     });
 
     gulp.watch(config.watch.style, ['styles']);
