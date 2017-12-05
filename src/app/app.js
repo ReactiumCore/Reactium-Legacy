@@ -26,8 +26,7 @@ let serviceObj        = {};
 let initialState      = {};
 
 const components      = [];
-const elements        = document.querySelectorAll('component');
-
+const elements        = document.querySelectorAll('Component');
 
 if (elements.length > 0) {
     elements.forEach((elm) => {
@@ -67,12 +66,13 @@ if (elements.length > 0) {
             // Get parameters from container element
             let params = {};
             Object.entries(elm.attributes).forEach(([key, attr]) => {
-                params[attr.name] = attr.value;
+                if ( key !== 'type') {
+                    params[attr.name] = attr.value;
+                }
             });
-            initialState[cname] = Object.assign({}, params);
 
             // Create the React element and apply parameters
-            let cmp = React.createElement(req);
+            let cmp = React.createElement(req, params);
             components.push({component: cmp, element: elm});
         }
     });
@@ -106,8 +106,6 @@ export const services = importDefined(allServices);
 
 export const routes = importDefined(allRoutes);
 
-export const restAPI = "http://demo3914762.mockable.io";
-
 export const restHeaders = () => {
     return {};
 };
@@ -126,21 +124,36 @@ export const App = () => {
         // Load middleware
         let middleWare = [thunk];
 
+        // Load InitalState first from modules
+        let importedStates = importDefined(allInitialStates);
+        initialState = {
+            ...initialState,
+            ...Object.keys(importedStates)
+                .filter(s => s in allReducers)
+                .reduce((states, key) => ({
+                    ...states,
+                    [key]: importedStates[key],
+                }), {})
+        };
+
         // Get localized state and apply it
         if (localizeState === true) {
             middleWare.push(lsSave());
-            initialState = Object.assign(initialState, lsLoad());
+            initialState = {
+                ...initialState,
+                ...lsLoad(),
+            };
         } else {
             lsClear();
         }
 
-        let enhancer   = compose(applyMiddleware(...middleWare));
+        const createStoreWithMiddleware = applyMiddleware(...middleWare)(createStore);
 
-        // Combine reducers
-        let reducerArr = combineReducers(importDefined(allReducers));
+        // Combine all Top-level reducers into one
+        let rootReducer = combineReducers(importDefined(allReducers));
 
         // Create the store
-        const store = createStore(reducerArr, initialState, enhancer);
+        const store = createStoreWithMiddleware(rootReducer, initialState);
 
         // Render the React Components
         components.forEach((item) => {

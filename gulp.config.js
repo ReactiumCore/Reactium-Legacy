@@ -36,6 +36,8 @@ module.exports = () => {
         entries: entries(),
         defines: {
             "global": "window",
+            restAPI: JSON.stringify(process.env.REST_API_URL || "http://demo3914762.mockable.io"),
+            allInitialStates: JSON.stringify(globDefineFiles('src/app/components/**/state.js')),
             allRoutes: JSON.stringify(globDefineFiles('src/app/components/**/route.js')),
             allActions: JSON.stringify(globDefineFiles('src/app/components/**/actions.js')),
             allActionTypes: JSON.stringify(globDefineFiles('src/app/components/**/actionTypes.js')),

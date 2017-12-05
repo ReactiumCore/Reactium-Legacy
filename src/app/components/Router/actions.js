@@ -10,11 +10,11 @@ export default {
 
         dispatch({
             type: actionTypes.UPDATE_ROUTE,
-            routing: location,
+            location,
         });
 
         // load route data
-        if ( route.hasOwnProperty('load') ) {
+        if ( 'load' in route ) {
             dispatch(route.load(params));
         }
     },

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { restAPI, restHeaders } from "appdir/app";
+import { restHeaders } from "appdir/app";
 
 
 const fetchHello = () => {

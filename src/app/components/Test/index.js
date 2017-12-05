@@ -23,7 +23,6 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, props) => ({
     test: {
-        mount: () => dispatch(actions.Test.mount()),
         click: () => dispatch(actions.Test.click()),
     }
 });
@@ -33,10 +32,6 @@ class Test extends Component {
         super(props);
 
         this.state = Object.assign({}, this.props);
-    }
-
-    componentDidMount() {
-        // this.props.test.mount();
     }
 
     componentWillReceiveProps(nextProps) {

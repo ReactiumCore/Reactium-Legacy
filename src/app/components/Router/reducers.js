@@ -6,7 +6,7 @@ const Router = (state = {}, action) => {
         case actions.UPDATE_ROUTE: {
             return {
                 ...state,
-                ...action.routing,
+                ...action.location,
             };
         }
         default: {
@@ -15,6 +15,4 @@ const Router = (state = {}, action) => {
     }
 };
 
-export default combineReducers({
-    Router,
-});
+export default Router;
