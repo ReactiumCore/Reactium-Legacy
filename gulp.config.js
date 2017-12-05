@@ -3,7 +3,7 @@
 const fs      = require('fs');
 const path    = require('path');
 const slug    = require('slug');
-
+const globby  = require('globby');
 
 // Scan src .js files and return them as an object
 const entries = () => {
@@ -23,10 +23,25 @@ const entries = () => {
     return obj;
 };
 
+const globDefineFiles = pattern => globby.sync(pattern)
+    .reduce((files, f) => {
+        let cmp = path.basename(path.parse(f).dir);
+        files[cmp] = f.replace(/^src\/app/, '.').replace(/.js$/, '');
+        return files;
+    }, {});
+
 module.exports = () => {
     return {
         env: 'development',
         entries: entries(),
+        defines: {
+            "global": "window",
+            allActions: JSON.stringify(globDefineFiles('src/app/components/**/actions.js')),
+            allActionTypes: JSON.stringify(globDefineFiles('src/app/components/**/actionTypes.js')),
+            allServices: JSON.stringify(globDefineFiles('src/app/components/**/services.js')),
+            allReducers: JSON.stringify(globDefineFiles('src/app/components/**/reducers.js')),
+
+        },
         dist: 'dist',
         browsers: "last 1 version",
         port: {

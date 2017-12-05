@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { matchPath, withRouter } from 'react-router'
 import routes from './routes';
-
 import { actions } from 'appdir/app';
 
 class RouteObserver extends Component {

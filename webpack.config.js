@@ -16,12 +16,11 @@ module.exports = (config) => {
 
     let env = config.env || 'production';
 
-    plugins.push(new webpack.DefinePlugin({
-        "process.env": {
-            NODE_ENV: JSON.stringify(env)
-        },
-        "global": "window",
-    }));
+    config.defines['process.env'] = {
+        NODE_ENV: JSON.stringify(env)
+    };
+
+    plugins.push(new webpack.DefinePlugin(config.defines));
 
     return {
         target: 'node',
@@ -46,7 +45,7 @@ module.exports = (config) => {
                     exclude        : /node_modules/,
                     query          : {
                         presets    : ['react', 'es2015', 'stage-2'],
-                        plugins    : ['import-glob', 'transform-object-rest-spread'],
+                        plugins    : ['transform-object-rest-spread'],
                     }
                 }
             ]

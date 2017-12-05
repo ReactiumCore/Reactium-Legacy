@@ -14,10 +14,10 @@ import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localsto
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
 // babel-plugin-import-glob loaded imports, use with care
-import * as allActionTypes from 'glob:./components/**/actionTypes.js';
-import * as allActions from 'glob:./components/**/actions.js';
-import * as allReducers from 'glob:./components/**/reducers.js';
-import * as allServices from 'glob:./components/**/services.js';
+// import * as allActionTypes from 'glob:./components/**/actionTypes.js';
+// import * as allActions from 'glob:./components/**/actions.js';
+// import * as allReducers from 'glob:./components/**/reducers.js';
+// import * as allServices from 'glob:./components/**/services.js';
 
 /**
  * -----------------------------------------------------------------------------
@@ -84,19 +84,31 @@ if (elements.length > 0) {
     });
 }
 
-export const actions = {
-    ...allActions,
-};
+// Utility for importing webpack define plugin defined files
+const importDefined = filesObj => Object.keys(filesObj).reduce((loaded, key) => {
+    let fileName = filesObj[key];
+    if (fileName) {
+        let newLoaded = require(fileName + "");
+        if ( 'default' in newLoaded ) {
+            newLoaded = newLoaded.default;
+        }
+        loaded = {
+            ...loaded,
+            [key]: newLoaded,
+        };
+    }
+    return loaded;
+}, {})
 
-export const actionTypes = Object.keys(allActionTypes).reduce((types, key) => ({
+export const actions = importDefined(allActions);
+
+let importedActionTypes = importDefined(allActionTypes);
+export const actionTypes = Object.keys(importedActionTypes).reduce((types, key) => ({
     ...types,
-    ...allActionTypes[key],
+    ...importedActionTypes[key],
 }), {});
 
-
-export const services = {
-    ...allServices
-};
+export const services = importDefined(allServices);
 
 export const restAPI = "http://demo3914762.mockable.io";
 
@@ -129,7 +141,7 @@ export const App = () => {
         let enhancer   = compose(applyMiddleware(...middleWare));
 
         // Combine reducers
-        let reducerArr = combineReducers({...allReducers});
+        let reducerArr = combineReducers(importDefined(allReducers));
 
         // Create the store
         const store = createStore(reducerArr, initialState, enhancer);
