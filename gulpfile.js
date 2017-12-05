@@ -16,11 +16,9 @@ const env              = require('yargs').argv;
 const config           = require('./gulp.config')();
 const webpackConfig    = require('./webpack.config')(config);
 
-
 // Update config from environment variables
 config.port.browsersync = (env.hasOwnProperty('port')) ? env.port : config.port.browsersync;
 config.env = (env.hasOwnProperty('environment')) ? env.environment : config.env;
-
 
 // Compile js
 gulp.task('scripts', (done) => {

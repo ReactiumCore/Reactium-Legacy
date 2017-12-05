@@ -13,7 +13,6 @@ import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
-
 /**
  * -----------------------------------------------------------------------------
  * @description Redux setup
@@ -75,49 +74,43 @@ if (elements.length > 0) {
             // Create the React element and apply parameters
             let cmp = React.createElement(req);
             components.push({component: cmp, element: elm});
-
-            // Get the reducers
-            try { reducer = require(path + '/reducers'); } catch (err) {}
-            if (reducer) {
-                if (reducer.hasOwnProperty('default')) {
-                    reducer = reducer.default;
-                }
-
-                reducerObj[cname] = reducer;
-            }
-
-            // Get the actions
-            try { action = require(path + '/actions'); } catch (err) { }
-            if (action) {
-                if (action.hasOwnProperty('default')) {
-                    action = action.default;
-                }
-
-                actionObj = Object.assign({}, actionObj, {...action});
-            }
-
-            // Get the actionTypes
-            try { actionType = require(path + '/actionTypes'); } catch (err) { }
-            if (actionType) {
-                if (actionType.hasOwnProperty('default')) {
-                    actionType = actionType.default;
-                }
-
-                actionTypeObj = Object.assign({}, actionTypeObj, {...actionType});
-            }
-
-            // Get the services
-            try { service = require(path + '/services'); } catch (err) { }
-            if (service) {
-                if (service.hasOwnProperty('default')) {
-                    service = service.default;
-                }
-
-                serviceObj = Object.assign({}, serviceObj, {...service});
-            }
         }
     });
 }
+
+// Utility for importing webpack define plugin defined files
+const importDefined = filesObj => Object.keys(filesObj).reduce((loaded, key) => {
+    let fileName = filesObj[key];
+    if (fileName) {
+        let newLoaded = require(fileName + "");
+        if ( 'default' in newLoaded ) {
+            newLoaded = newLoaded.default;
+        }
+        loaded = {
+            ...loaded,
+            [key]: newLoaded,
+        };
+    }
+    return loaded;
+}, {})
+
+export const actions = importDefined(allActions);
+
+let importedActionTypes = importDefined(allActionTypes);
+export const actionTypes = Object.keys(importedActionTypes).reduce((types, key) => ({
+    ...types,
+    ...importedActionTypes[key],
+}), {});
+
+export const services = importDefined(allServices);
+
+export const routes = importDefined(allRoutes);
+
+export const restAPI = "http://demo3914762.mockable.io";
+
+export const restHeaders = () => {
+    return {};
+};
 
 
 /**
@@ -144,7 +137,7 @@ export const App = () => {
         let enhancer   = compose(applyMiddleware(...middleWare));
 
         // Combine reducers
-        let reducerArr = combineReducers({...reducerObj});
+        let reducerArr = combineReducers(importDefined(allReducers));
 
         // Create the store
         const store = createStore(reducerArr, initialState, enhancer);
@@ -159,22 +152,4 @@ export const App = () => {
             );
         });
     }
-};
-
-export const actions = {
-    ...actionObj
-};
-
-export const actionTypes = {
-    ...actionTypeObj
-};
-
-export const services = {
-    ...serviceObj
-};
-
-export const restAPI = "http://demo3914762.mockable.io";
-
-export const restHeaders = () => {
-    return {};
 };

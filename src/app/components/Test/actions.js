@@ -2,15 +2,13 @@ import { actionTypes } from 'appdir/app';
 import { services } from 'appdir/app';
 
 export default {
-    test: {
-        mount: () => (dispatch) => {
-            services.fetchHello().then((data) => {
-                dispatch({type: actionTypes.TEST_MOUNT, data: data});
-            });
-        },
+    mount: params => (dispatch) => {
+        services.Test.fetchHello().then((data) => {
+            dispatch({type: actionTypes.TEST_MOUNT, data: data});
+        });
+    },
 
-        click: () => (dispatch) => {
-            dispatch({type: actionTypes.TEST_CLICK});
-        }
-    }
+    click: () => (dispatch) => {
+        dispatch({type: actionTypes.TEST_CLICK});
+    },
 };
