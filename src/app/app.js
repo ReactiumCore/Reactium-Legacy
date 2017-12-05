@@ -13,12 +13,6 @@ import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
-// babel-plugin-import-glob loaded imports, use with care
-// import * as allActionTypes from 'glob:./components/**/actionTypes.js';
-// import * as allActions from 'glob:./components/**/actions.js';
-// import * as allReducers from 'glob:./components/**/reducers.js';
-// import * as allServices from 'glob:./components/**/services.js';
-
 /**
  * -----------------------------------------------------------------------------
  * @description Redux setup
