@@ -26,7 +26,7 @@ const elements        = document.querySelectorAll('Component');
 if (elements.length > 0) {
     elements.forEach((elm) => {
 
-        let req, path;
+        let req, comp;
         let cname = elm.getAttribute('type');
 
         if (!cname) { return; }
@@ -37,9 +37,9 @@ if (elements.length > 0) {
         ];
 
         while (!req && paths.length > 0) {
-            path = paths.shift();
+            comp = paths.shift();
 
-            try { req = require(path + ''); } catch (err) { }
+            try { req = require(comp + ''); } catch (err) { }
 
             if (req) {
                 if (req.hasOwnProperty('default')) {
