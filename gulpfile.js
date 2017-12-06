@@ -13,13 +13,14 @@ const sass             = require('gulp-sass');
 const csso             = require('gulp-csso');
 const sourcemaps       = require('gulp-sourcemaps');
 const env              = require('yargs').argv;
-
 const config           = require('./gulp.config')();
-const webpackConfig    = require('./webpack.config')(config);
 
 // Update config from environment variables
 config.port.browsersync = (env.hasOwnProperty('port')) ? env.port : config.port.browsersync;
 config.env = (env.hasOwnProperty('environment')) ? env.environment : config.env;
+
+// Set webpack config after environment variables
+const webpackConfig    = require('./webpack.config')(config);
 
 // Compile js
 gulp.task('scripts', (done) => {
