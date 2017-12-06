@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 /**
  * -----------------------------------------------------------------------------
@@ -19,19 +19,14 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
  * -----------------------------------------------------------------------------
  */
 let localizeState     = true;
-let reducerObj        = {};
-let actionObj         = {};
-let actionTypeObj     = {};
-let serviceObj        = {};
 let initialState      = {};
-
 const components      = [];
 const elements        = document.querySelectorAll('Component');
 
 if (elements.length > 0) {
     elements.forEach((elm) => {
 
-        let req, path, reducer, action, actionType, service;
+        let req, path;
         let cname = elm.getAttribute('type');
 
         if (!cname) { return; }
@@ -57,11 +52,6 @@ if (elements.length > 0) {
             console.log(`${cname} component does not exist`);
             elm.innerHTML = '';
         } else {
-            // Get the component directory so we can find the redux files
-            let parr = path.split('/');
-            if (parr.pop() === 'index') {
-                path = parr.join('/');
-            }
 
             // Get parameters from container element
             let params = {};
@@ -92,7 +82,7 @@ const importDefined = filesObj => Object.keys(filesObj).reduce((loaded, key) => 
         };
     }
     return loaded;
-}, {})
+}, {});
 
 export const actions = importDefined(allActions);
 
