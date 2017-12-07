@@ -397,4 +397,5 @@ You can pass initial state to the component via attributes but that's not necess
 
 
 ## The Build Process
-![](https://image.ibb.co/c4vm9b/reactium_build_process.png)
+![](https://image.ibb.co/jeddNw/reactium_build_process_2.png)
+
