@@ -12,6 +12,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+import DevTools from 'appdir/components/DevTools';
 
 /**
  * -----------------------------------------------------------------------------
@@ -100,6 +101,15 @@ export const restHeaders = () => {
     return {};
 };
 
+// Make sure initial loaded state matches reducers and that
+// the current route will dictate the Router state
+const sanitizeInitialState = state => Object.keys(state)
+    .filter(s => s in allReducers)
+    .filter(s => s !== 'Router')
+    .reduce((states, key) => ({
+        ...states,
+        [key]: state[key],
+    }), {});
 
 /**
  * -----------------------------------------------------------------------------
@@ -118,20 +128,16 @@ export const App = () => {
         let importedStates = importDefined(allInitialStates);
         initialState = {
             ...initialState,
-            ...Object.keys(importedStates)
-                .filter(s => s in allReducers)
-                .reduce((states, key) => ({
-                    ...states,
-                    [key]: importedStates[key],
-                }), {})
+            ...sanitizeInitialState(importedStates),
         };
+        // Don't use Router state on reload
 
         // Get localized state and apply it
         if (localizeState === true) {
             middleWare.push(lsSave());
             initialState = {
                 ...initialState,
-                ...lsLoad(),
+                ...sanitizeInitialState(lsLoad()),
             };
         } else {
             lsClear();
@@ -142,14 +148,26 @@ export const App = () => {
         // Combine all Top-level reducers into one
         let rootReducer = combineReducers(importDefined(allReducers));
 
+        // Add DevTools redux enhancer in development
+        let storeEnhancer = process.env.NODE_ENV === 'development' ? DevTools.instrument() : _=>_;
+
         // Create the store
-        const store = createStoreWithMiddleware(rootReducer, initialState);
+        const store = createStoreWithMiddleware(rootReducer, initialState, storeEnhancer);
 
         // Render the React Components
-        components.forEach((item) => {
+        components.forEach((item, i) => {
+            // Add DevTools to first bound component in development
+            let Tools = null;
+            if (i === 0 && process.env.NODE_ENV === 'development') {
+                Tools = DevTools;
+            }
+
             ReactDOM.render(
                 <Provider store={store}>
-                    {item.component}
+                    <div>
+                        {item.component}
+                        <Tools />
+                    </div>
                 </Provider>,
                 item.element
             );

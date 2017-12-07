@@ -18,7 +18,7 @@ class RouteObserver extends Component {
                 return match && match.isExact;
             });
 
-            if ( location && route ) {
+            if ( location ) {
                 let routeParams = matchPath(location.pathname, route).params;
 
                 updateRoute(

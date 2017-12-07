@@ -46,7 +46,7 @@ class Test extends Component {
 
     render() {
         return (
-            <div>
+            <div className="test-component">
                 <div>{this.state.msg}</div>
                 <button type="button" onClick={this.onClick.bind(this)}>
                     Click Me
