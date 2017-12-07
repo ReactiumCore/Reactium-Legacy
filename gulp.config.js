@@ -43,7 +43,6 @@ module.exports = () => {
             allActionTypes: JSON.stringify(globDefineFiles('src/app/components/**/actionTypes.js')),
             allServices: JSON.stringify(globDefineFiles('src/app/components/**/services.js')),
             allReducers: JSON.stringify(globDefineFiles('src/app/components/**/reducers.js')),
-
         },
         dist: 'dist',
         browsers: "last 1 version",

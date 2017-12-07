@@ -394,3 +394,7 @@ Open the `~/src/index.html` file and add the component to the layout using the c
 
 Reactium will now scan your markup for the `<Component>` tags and bind the specified `type` to the element.
 You can pass initial state to the component via attributes but that's not necessary if you're using Redux for state management.
+
+
+## The Build Process
+![](https://image.ibb.co/c4vm9b/reactium_build_process.png)
