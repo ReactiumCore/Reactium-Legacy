@@ -82,7 +82,7 @@ export default Hello;
 
 ### Redux Class Components
 Create a Redux Class Component if your component will need the interact with the application state.
-Redux Class Components work just like Class Components accept you will need to map state to properties and map dispatchers to actions via the React Redux `connect` method.
+Redux Class Components work just like Class Components accept you will need to map state to properties and map dispatchers to actions via the [react-redux](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) `connect` method.
 
 ```js
 import React, { Component } from 'react';
@@ -151,8 +151,20 @@ When it comes to a Redux Class Component the following files are required:
 
 > Don't worry, there's a CLI command that automates component creation.
 
-### The actions.js file
-Reactium aggregates all `action.js` files into the `actions` export of the `app.js` file and is accessible by importing it into any component: `import { actions } from 'appdir/app';`
+### The actions.js File
+
+Reactium aggregates all `action.js` files into the `actions` export of the `app.js` file.
+
+To access the actions simply import the actions:
+```
+import { actions } from 'appdir/app';
+```
+
+Then use an action by targeting the component domain that created the action:
+```js
+...
+actions.Test.mount({some: "params"});
+```
 
 > Q: What's this `appdir/` thing all about?
 > A: `appdir` is a constant defined in the Webpack configuration that references the `~/src/app` directory. It helps clarify where you're importing something from by eliminating the need to do something like: `import { something } from '../../../components/SomeOtherComponent'`.
@@ -161,13 +173,10 @@ A typical `actions.js` file may look like this:
 
 ```js
 import { actionTypes } from 'appdir/app';
-import { services } from 'appdir/app';
 
 export default {
     mount: params => (dispatch) => {
-        services.Test.fetchHello().then((data) => {
-            dispatch({type: actionTypes.TEST_MOUNT, data: data});
-        });
+        dispatch({type: actionTypes.TEST_MOUNT, data: params});
     },
 
     click: () => (dispatch) => {
@@ -176,6 +185,103 @@ export default {
 };
 ```
 
+### The actionTypes.js File
+Reactium aggregates all `actionTypes.js` files in the `actionTypes` export of the `app.js` file.
+
+To access the actionTypes, import them into your component:
+```js
+import { actionTypes } from 'appdir/app';
+```
+
+Usage:
+```js
+...
+dispatch({type: actionTypes.TEST_MOUNT, data: data});
+```
+
+### The index.js File
+See [Redux Class Components](https://github.com/Atomic-Reactor/Reactium#redux-class-components).
+
+### The reducers.js File
+Reactium aggregates all `reducers.js` files into the Redux store using the [react-redux](https://github.com/reactjs/react-redux/tree/master/docs) `combineReducers` method.
+
+A typical `reducers.js` file may look like this:
+```js
+import { actionTypes } from 'appdir/app';
+
+export default (state = {}, action) => {
+
+    let newState;
+
+    switch (action.type) {
+
+        case actionTypes.TEST_MOUNT:
+
+            newState = Object.assign({}, state, {...action.data});
+            return newState;
+            break;
+
+        case actionTypes.TEST_CLICK:
+
+            let count = state.count || 0;
+            newState = Object.assign({}, state, {count: count + 1});
+            return newState;
+            break;
+
+        default:
+            return state;
+    }
+};
+```
+
+### The route.js File
+HELP ME OUT HERE JOHN
+
+### The services.js File
+Reactium aggregates all `services.js` files into the `services` export of the `app.js` file.
+
+To access the services, import them into your component:
+```js
+import { services } from 'appdir/app';
+```
+
+Usage:
+```js
+...
+services.Test.fetchHello().then((result) => {
+    // Do something with the result
+});
+```
+
+A typical `services.js` file may look like this:
+```js
+import axios from 'axios';
+import { restHeaders } from "appdir/app";
+
+
+const fetchHello = () => {
+    let hdr = restHeaders();
+    return axios.get(`${restAPI}/hello`, {headers: hdr}).then(({data}) => data);
+};
+
+export default {
+    fetchHello,
+}
+```
+> Reactium uses [axios](https://www.npmjs.com/package/axios) to make XMLHttpRequests from the browser. You can swap that out with whatever you want.
+
+
+### The state.js File
+Reactium aggregates all `state.js` files into the Redux `store` for the application.
+
+A typical `state.js` file may look like this:
+
+```js
+export default {
+    some: "value",
+    another: 1,
+};
+```
 
 ## Creating Components
 
