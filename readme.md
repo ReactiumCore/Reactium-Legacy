@@ -145,7 +145,7 @@ When it comes to a Redux Class Component the following files are required:
 
 | File | Description |
 |:----|:----|
-| [actions.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-actionsjs-file) | List of action functions. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
+| [actions.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-actionsjs-file) | List of action functions. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). Redux [Thunk actions](https://github.com/gaearon/redux-thunk) are automatically supported. |
 | [actionTypes.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-actiontypesjs-file) | List of action filters. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
 | [index.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-indexjs-file) | Main component class. |
 | [reducers.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-reducersjs-file) | Action handlers. See [Redux Reducers](https://redux.js.org/docs/basics/Reducers.html). |
@@ -154,6 +154,8 @@ When it comes to a Redux Class Component the following files are required:
 | [state.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-statejs-file) | The default state of the component. |
 
 > Don't worry, there's a CLI command that automates component creation.
+
+> **Note:** You will need to restart the build after creating a new component with state, reducers, actions, actionTypes, etc.
 
 ### The actions.js File
 
@@ -249,7 +251,33 @@ export default (state = {}, action) => {
 ```
 
 ### The route.js File
-HELP ME OUT HERE JOHN
+Reactium aggregates all `route.js` files into a list of routes used to render React Router [`<Route />` components](https://reacttraining.com/react-router/web/api/Route) and observed by the the Reactium `RouteObserver` component.
+
+A route can have any property that is supported by [`<Route />`](https://reacttraining.com/react-router/web/api/Route) (e.g. `path`, `exact`, `strict`, `location`, `component`, `render`, and `children`).
+
+A typical `route.js` file in `MyComponent` may look like this:
+```js
+// Import your component
+import MyComponent from './index';
+// Import the aggregated actions (optional)
+import { actions } from 'appdir/app';
+
+export default {
+    // Route pattern that should route to
+    path: '/my-component/:paramA/:paramB',
+
+    // Should the Route be exact?
+    exact: true,
+
+    // the component to load for this route
+    component: MyComponent,
+
+    // (optional) a Redux thunk action to load data for this component
+    load: params => actions.MyComponent.mount(params),
+};
+```
+
+In addition to [`<Route />`](https://reacttraining.com/react-router/web/api/Route) properties, you can also provide a [Redux thunk](https://github.com/gaearon/redux-thunk) action function to the `load` property. The Reactium `RouteObserver` component will automatically dispatch your `load` thunk, passing along route parameters. Use this for asynchronous loading of data on observed route changes.
 
 ### The services.js File
 Reactium aggregates all `services.js` files into the `services` export of the `app.js` file.
