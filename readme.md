@@ -81,10 +81,104 @@ export default Hello;
 ```
 
 ### Redux Class Components
+Create a Redux Class Component if your component will need the interact with the application state.
+Redux Class Components work just like Class Components accept you will need to map state to properties and map dispatchers to actions via the React Redux `connect` method.
 
+```js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { actions } from 'appdir/app';
+
+// Map state to properties
+const mapStateToProps = (state, props) => {
+    return Object.assign({}, state['Test'], props);
+};
+
+// Map dispatchers to actions
+const mapDispatchToProps = (dispatch, props) => ({
+    test: {
+        click: () => dispatch(actions.Test.click()),
+    }
+});
+
+class Test extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = Object.assign({}, this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState((prevState) => {
+            return Object.assign({}, prevState, nextProps);
+        });
+    }
+
+    // Use the above mapped click dispatcher on button click
+    onClick() {
+        this.props.test.click();
+    }
+
+    render() {
+        return (
+            <div>
+                <div>{this.state.msg}</div>
+                <button type="button" onClick={this.onClick.bind(this)}>
+                    Click Me
+                </button>
+                <div>{this.state.count || 0}</div>
+            </div>
+        );
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Test);
+```
+
+## Component Architecture
+Reactium component architecture is pretty simple when it comes to a function or class component.
+1. Create the component domain in the `~/src/app/components` directory.
+2. Create an `index.js` file with your component code.
+
+When it comes to a Redux Class Component the following files are required:
+| actions.js | List of action functions. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
+| actionTypes.js | List of action filters. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
+| index.js | Main component class. |
+| reducers.js | Action handlers. See [Redux Reducers](https://redux.js.org/docs/basics/Reducers.html). |
+| route.js | Route handler for the component. |
+| services.js | Ajax requests associated with the component. |
+| state.js | The default state of the component. |
+
+> Don't worry, there's a CLI command that automates component creation.
+
+### The actions.js file
+Reactium aggregates all `action.js` files into the `actions` export of the `app.js` file and is accessible by importing it into any component: `import { actions } from 'appdir/app';`
+
+> Q: What's this `appdir/` thing all about?
+> A: `appdir` is a constant defined in the Webpack configuration that references the `~/src/app` directory. It helps clarify where you're importing something from by eliminating the need to do something like: `import { something } from '../../../components/SomeOtherComponent'`.
+
+A typical `actions.js` file may look like this:
+
+```js
+import { actionTypes } from 'appdir/app';
+import { services } from 'appdir/app';
+
+export default {
+    mount: params => (dispatch) => {
+        services.Test.fetchHello().then((data) => {
+            dispatch({type: actionTypes.TEST_MOUNT, data: data});
+        });
+    },
+
+    click: () => (dispatch) => {
+        dispatch({type: actionTypes.TEST_CLICK});
+    },
+};
+```
 
 
 ## Creating Components
+
 
 1. Before creating a component, grab the Atomic Reactor CLI:
 ```
@@ -113,7 +207,7 @@ $ arcli re:gen class --open
 | --no-types | Exclude the actionsTypes.js file. | |
 | --no-reducers | Exclude the reducers.js file. | |
 | --no-services | Exclude the services.js file. | |
-| --no-routes | Exclude the routes.js file. | |
+| --no-router | Exclude the routes.js file. | |
 
 
 4. Follow the prompts:
@@ -122,9 +216,6 @@ $ arcli re:gen class --open
 * Use Redux?: Determines if your new component's state will be managed by [Redux](redux.js.org).
 
 ![](https://image.ibb.co/iE8y4b/new_component_class.png)
-
-## Component Architecture
-
 
 
 ## Using Components
