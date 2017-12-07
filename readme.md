@@ -141,6 +141,8 @@ Reactium component architecture is pretty simple when it comes to a function or 
 2. Create an `index.js` file with your component code.
 
 When it comes to a Redux Class Component the following files are required:
+
+| File | Description |
 |:----|:----|
 | actions.js | List of action functions. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
 | actionTypes.js | List of action filters. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
