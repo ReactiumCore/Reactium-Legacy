@@ -81,7 +81,7 @@ export default Hello;
 ```
 
 ### Redux Class Components
-Create a Redux Class Component if your component will need the interact with the application state.
+Create a Redux Class Component if your component will need to interact with the application state.
 Redux Class Components work just like Class Components accept you will need to map state to properties and map dispatchers to actions via the [react-redux](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) `connect` method.
 
 ```js
@@ -141,6 +141,7 @@ Reactium component architecture is pretty simple when it comes to a function or 
 2. Create an `index.js` file with your component code.
 
 When it comes to a Redux Class Component the following files are required:
+|:----|:----|
 | actions.js | List of action functions. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
 | actionTypes.js | List of action filters. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
 | index.js | Main component class. |
