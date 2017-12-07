@@ -170,6 +170,7 @@ actions.Test.mount({some: "params"});
 ```
 
 > Q: What's this `appdir/` thing all about?
+
 > A: `appdir` is a constant defined in the Webpack configuration that references the `~/src/app` directory. It helps clarify where you're importing something from by eliminating the need to do something like: `import { something } from '../../../components/SomeOtherComponent'`.
 
 A typical `actions.js` file may look like this:
