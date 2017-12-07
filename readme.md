@@ -27,14 +27,15 @@ $ npm run launch
 ```
 
 # Development Guide
-The intent behind the Reactium Framework is to get you quickly creating React components and applications. With that in mind, we geared the tooling towards automation and ease of use.
+The intent behind the Reactium Framework is to get you quickly creating React components and applications.
+With that in mind, we geared the tooling towards automation and ease of use.
 
 
 ## Components
 There are 3 types of components you can create:
-* Functional Components
-* Class Components
-* Redux Class Components
+* [Functional Components](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#functional-components)
+* [Class Components](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#class-components)
+* [Redux Class Components](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#redux-class-components)
 
 ### Functional Components
 Create a Functional Component if your component will not need to worry about application state or events. Functional components accept a single `props` argument and should be very clear and concise in their make-up.
@@ -144,13 +145,13 @@ When it comes to a Redux Class Component the following files are required:
 
 | File | Description |
 |:----|:----|
-| actions.js | List of action functions. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
-| actionTypes.js | List of action filters. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
-| index.js | Main component class. |
-| reducers.js | Action handlers. See [Redux Reducers](https://redux.js.org/docs/basics/Reducers.html). |
-| route.js | Route handler for the component. |
-| services.js | Ajax requests associated with the component. |
-| state.js | The default state of the component. |
+| [actions.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-actionsjs-file) | List of action functions. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
+| [actionTypes.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-actiontypesjs-file) | List of action filters. See [Redux Actions](https://redux.js.org/docs/basics/Actions.html). |
+| [index.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-indexjs-file) | Main component class. |
+| [reducers.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-reducersjs-file) | Action handlers. See [Redux Reducers](https://redux.js.org/docs/basics/Reducers.html). |
+| [route.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-routejs-file) | Route handler for the component. |
+| [services.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-servicesjs-file) | Ajax requests associated with the component. |
+| [state.js](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-statejs-file) | The default state of the component. |
 
 > Don't worry, there's a CLI command that automates component creation.
 
