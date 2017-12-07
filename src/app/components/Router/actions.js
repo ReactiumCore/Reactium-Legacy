@@ -1,7 +1,7 @@
 import { actionTypes } from 'appdir/app';
 
 export default {
-    updateRoute: (location, route, params) => (dispatch, getState) => {
+    updateRoute: (location, route = {}, params) => (dispatch, getState) => {
         const { Router } = getState();
 
         if ( Router.pathname !== location.pathname ) {

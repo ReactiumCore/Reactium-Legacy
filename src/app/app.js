@@ -101,6 +101,15 @@ export const restHeaders = () => {
     return {};
 };
 
+// Make sure initial loaded state matches reducers and that
+// the current route will dictate the Router state
+const sanitizeInitialState = state => Object.keys(state)
+    .filter(s => s in allReducers)
+    .filter(s => s !== 'Router')
+    .reduce((states, key) => ({
+        ...states,
+        [key]: state[key],
+    }), {});
 
 /**
  * -----------------------------------------------------------------------------
@@ -119,20 +128,16 @@ export const App = () => {
         let importedStates = importDefined(allInitialStates);
         initialState = {
             ...initialState,
-            ...Object.keys(importedStates)
-                .filter(s => s in allReducers)
-                .reduce((states, key) => ({
-                    ...states,
-                    [key]: importedStates[key],
-                }), {})
+            ...sanitizeInitialState(importedStates),
         };
+        // Don't use Router state on reload
 
         // Get localized state and apply it
         if (localizeState === true) {
             middleWare.push(lsSave());
             initialState = {
                 ...initialState,
-                ...lsLoad(),
+                ...sanitizeInitialState(lsLoad()),
             };
         } else {
             lsClear();
