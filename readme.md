@@ -158,21 +158,6 @@ When it comes to a Redux Class Component the following files are required:
 
 Reactium aggregates all `action.js` files into the `actions` export of the `app.js` file.
 
-To access the actions simply import the actions:
-```
-import { actions } from 'appdir/app';
-```
-
-Then use an action by targeting the component domain that created the action:
-```js
-...
-actions.Test.mount({some: "params"});
-```
-
-> Q: What's this `appdir/` thing all about?
-
-> A: `appdir` is a constant defined in the Webpack configuration that references the `~/src/app` directory. It helps clarify where you're importing something from by eliminating the need to do something like: `import { something } from '../../../components/SomeOtherComponent'`.
-
 A typical `actions.js` file may look like this:
 
 ```js
@@ -189,8 +174,32 @@ export default {
 };
 ```
 
+To access the actions simply import the actions:
+```
+import { actions } from 'appdir/app';
+```
+
+Then use an action by targeting the component domain that created the action:
+```js
+...
+actions.Test.mount({some: "params"});
+```
+
+> Q: What's this `appdir` thing all about?
+
+> A: `appdir` is a constant defined in the Webpack configuration that references the `~/src/app` directory. It helps clarify where you're importing something from by eliminating the need to do something like: `import { something } from '../../../components/SomeOtherComponent'`.
+
+
 ### The actionTypes.js File
 Reactium aggregates all `actionTypes.js` files in the `actionTypes` export of the `app.js` file.
+
+A typical `actionTypes.js` file may look like this:
+```js
+export default {
+    TEST_MOUNT: 'TEST_MOUNT',
+    TEST_CLICK: 'TEST_CLICK',
+};
+```
 
 To access the actionTypes, import them into your component:
 ```js
@@ -244,19 +253,6 @@ HELP ME OUT HERE JOHN
 ### The services.js File
 Reactium aggregates all `services.js` files into the `services` export of the `app.js` file.
 
-To access the services, import them into your component:
-```js
-import { services } from 'appdir/app';
-```
-
-Usage:
-```js
-...
-services.Test.fetchHello().then((result) => {
-    // Do something with the result
-});
-```
-
 A typical `services.js` file may look like this:
 ```js
 import axios from 'axios';
@@ -273,6 +269,19 @@ export default {
 }
 ```
 > Reactium uses [axios](https://www.npmjs.com/package/axios) to make XMLHttpRequests from the browser. You can swap that out with whatever you want.
+
+To access the services, import them into your component:
+```js
+import { services } from 'appdir/app';
+```
+
+Usage:
+```js
+...
+services.Test.fetchHello().then((result) => {
+    // Do something with the result
+});
+```
 
 
 ### The state.js File
@@ -305,19 +314,22 @@ $ cd /MyAwesome/Project
 $ arcli re:gen class --open
 ```
 
-| Flag | Description |  |  |
-|:-----|:------------|:-------|:--------|
-| -h, --help | Output usage information.
-| -n, --name | The name of the component. | String |
-| -o, --overwrite | Overwrite if the component already exists. | Y/N | Default: `N` |
-| -p, --path | Absolute path to where the component is created. | String | Default: `~/src/app/components`. |
-| -c, --component | The parent component when creating a child component. | String | |
-| --open | Open the new component in the default application. | |
-| --no-actions | Exclude the actions.js file. | |
-| --no-types | Exclude the actionsTypes.js file. | |
-| --no-reducers | Exclude the reducers.js file. | |
-| --no-services | Exclude the services.js file. | |
-| --no-router | Exclude the routes.js file. | |
+Flags:
+```
+    -n, --name <name>            The name of the component.
+    -o, --overwrite [overwrite]  Overwrite if the component already exists.
+    -p, --path [path]            Absolute path to where the component is created. Default ~/src/app/components.
+    -c, --component [component]  The parent component when creating a child component.
+    -r, --route [route]          The route to associate with the component.
+    --open [open]                Open the new file(s) in the default application.
+    --no-actions [actions]       Exclude the actions.js file.
+    --no-types [types]           Exclude the actionsTypes.js file.
+    --no-reducers [reducers]     Exclude the reducers.js file.
+    --no-services [services]     Exclude the services.js file.
+    --no-router [router]         Exclude the route.js file.
+    --no-state [state]           Exclude the state.js file.
+    -h, --help                   Output usage information.
+```
 
 
 4. Follow the prompts:
@@ -349,7 +361,7 @@ Open the `~/src/index.html` file and add the component to the layout using the c
 </html>
 ```
 
-> _Alternatively, you can just start using the component in your app like you would any other React component._
+> Alternatively, you can just start using the component in your app like you would any other React component.
 
 Reactium will now scan your markup for the `<Component>` tags and bind the specified `type` to the element.
 You can pass initial state to the component via attributes but that's not necessary if you're using Redux for state management.
