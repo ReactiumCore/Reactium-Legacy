@@ -12,13 +12,13 @@ DDD focuses on three core principles:
 * Constantly collaborate with domain experts, in order to improve the application model and resolve any emerging domain-related issues.
 
 ### Advantages of DDD
-* *Eases Communication:* With an early emphasis on establishing a common and ubiquitous language related to the domain model of the project, teams will often find communication throughout the entire development life cycle to be much easier. Typically, DDD will require less technical jargon when discussing aspects of the application, since the ubiquitous language established early on will likely define simpler terms to refer to those more technical aspects.
-* *Improves Flexibility:* Since DDD is based around modularity, nearly everything within the domain model will be based on an object and will, therefore, be quite encapsulated. This allows for various components, or even the entire system as a whole, to be altered and improved on a regular, continuous basis.
-* *Emphasizes Domain Over Interface:* Since DDD is the practice of building around the concepts of domain and what the domain experts within the project advise, DDD will often produce applications that are accurately suited for and representative of the domain at hand, as opposed to those applications which emphasize the UI/UX first and foremost. While an obvious balance is required, the focus on domain means that a DDD approach can produce a product that resonates well with the audience associated with that domain.
+* **Eases Communication:** With an early emphasis on establishing a common and ubiquitous language related to the domain model of the project, teams will often find communication throughout the entire development life cycle to be much easier. Typically, DDD will require less technical jargon when discussing aspects of the application, since the ubiquitous language established early on will likely define simpler terms to refer to those more technical aspects.
+* **Improves Flexibility:** Since DDD is based around modularity, nearly everything within the domain model will be based on an object and will, therefore, be quite encapsulated. This allows for various components, or even the entire system as a whole, to be altered and improved on a regular, continuous basis.
+* **Emphasizes Domain Over Interface:** Since DDD is the practice of building around the concepts of domain and what the domain experts within the project advise, DDD will often produce applications that are accurately suited for and representative of the domain at hand, as opposed to those applications which emphasize the UI/UX first and foremost. While an obvious balance is required, the focus on domain means that a DDD approach can produce a product that resonates well with the audience associated with that domain.
 
 ### Disadvantages
-* *Requires Robust Domain Expertise:* Even with the most technically proficient minds working on development, it’s all for naught if there isn’t at least one domain expert on the team that knows the exact ins and outs of the subject area on which the application is intended to apply. In some cases, domain-driven design may require the integration of one or more outside team members who can act as domain experts throughout the development life cycle.
-* *Encourages Iterative Practices:* While many would consider this an advantage, it cannot be denied that DDD practices strongly rely on constant iteration and continuous integration in order to build a malleable project that can adjust itself when necessary. Some organizations may have trouble with these practices, particularly if their past experience is largely tied to less-flexible development models, such as the waterfall model or the like.
+* **Requires Robust Domain Expertise:** Even with the most technically proficient minds working on development, it’s all for naught if there isn’t at least one domain expert on the team that knows the exact ins and outs of the subject area on which the application is intended to apply. In some cases, domain-driven design may require the integration of one or more outside team members who can act as domain experts throughout the development life cycle.
+* **Encourages Iterative Practices:** While many would consider this an advantage, it cannot be denied that DDD practices strongly rely on constant iteration and continuous integration in order to build a malleable project that can adjust itself when necessary. Some organizations may have trouble with these practices, particularly if their past experience is largely tied to less-flexible development models, such as the waterfall model or the like.
 
 
 # Quick Start
@@ -371,7 +371,7 @@ Flags:
 
 ## Using Components
 Now that you've created your first component, it's time to use it.
-Open the `~/src/index.html` file and add the component to the layout using the custom element `<Component>`.
+Open the `~/src/index.html` file and add the component to the layout using the custom element `<Component />`.
 
 ```html
 <!doctype html>
@@ -392,21 +392,21 @@ Open the `~/src/index.html` file and add the component to the layout using the c
 
 > Alternatively, you can just start using the component in your app like you would any other React component.
 
-Reactium will now scan your markup for the `<Component>` tags and bind the specified `type` to the element.
+Reactium will now scan your markup for the `<Component />` tags and bind the specified `type` to the element.
 You can pass initial state to the component via attributes but that's not necessary if you're using Redux for state management.
 
 
 ## The Build Process
 ![](https://image.ibb.co/jeddNw/reactium_build_process_2.png)
 
-Reactium uses the combination of [Gulp](https://gulpjs.com/), [Webpack 3](https://webpack.js.org/), & [BrowserSync](https://browsersync.io/) to build and run the development environment.
-You might ask: Why not use just Webpack or just Gulp?
+Reactium uses the combination of [Gulp](https://gulpjs.com/), [Webpack 3](https://webpack.js.org/), & [Browsersync](https://browsersync.io/) to build and run the development environment.
+> You might ask: Why not use just Webpack or just Gulp?
 
 We identified 4 major requirements for our workflow:
-1. Bundling and transpiling Javascript.
-2. Moving assets from one location to another.
-3. Sass compilation and optimization.
-4. Hot reload of the development environment.
+1. [Bundling and transpiling Javascript](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#bundling-and-transpiling-javascript).
+2. [Moving assets from one location to another](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#moving-assets).
+3. [Sass compilation and optimization](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#sass-compilation-and-optimization).
+4. [Hot reload of the development environment](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#hot-reloading).
 
 #### Bundling and Transpiling Javascript
 Without a doubt we felt that Webpack was the best solution for this requirement. The deciding factor was Webpack's dependency handling.
@@ -418,41 +418,41 @@ Gulp provides a frictionless and very simple pattern for moving assets. The deci
 Gulp's ability to compile Sass is pretty straight forward and doesn't require a lot of configuration. We found that with Webpack, this wasn't obviously clear and took a lot of configuration to get the right set up. Webpack also restricts the delivery of the compiled style sheet to a single destination, making it hard to save the file to multiple directories if needed.
 
 #### Hot Reloading
-BrowserSync offers a large variety of simple configurations that allows you to server the development environment locally. The deciding factor was BrowserSync's ability to server from a proxy instead of the application directory. This could come in handy if you need to run a node instance as well as your application within your development environment.
+Browsersync offers a large variety of simple configurations that allows you to server the development environment locally. The deciding factor was Browsersync's ability to server from a proxy instead of the application directory. This could come in handy if you need to run a node instance as well as your application within your development environment.
 
 ### The Gulp Config
 Source paths and destinations should be managed in the `gulp.config.js` file, giving you a single place to alter build behaviors without directly altering Gulp Tasks.
 
 
-##### env
+#### env
 The environment type: development/production.
 
-_Default: development_
+_**Default:**_ `development`
 
-##### entries
+#### entries
 List of files that will be bundled and transpiled by Webpack.
 
-_Default: `src/app/*.js`_
+_**Default:**_ `src/app/*.js`
 
 > Top level .js files in the `~/src/app` directory
 
 
-##### browsers
+#### browsers
 Babel browser support when transpiling.
 
-Default: last 1 version
+_**Default:**_ `last 1 version`
 
 > The previous and current version of all major browsers.
 
 
-##### port
+#### port
 List or ports used when running the development environment.
 
-**port.browsersync:** The port to run BrowserSync on.
-If you're running a proxy with BrowserSync, you will want to define the port the proxy runs on as well then reference it in your serve task.
+**port.browsersync:** The port to run Browsersync on.
+If you're running a proxy with Browsersync, you will want to define the port the proxy runs on as well then reference it in your serve task.
 
 
-##### src
+#### src
 List of source locations for the default build task.
 
 **src.js:** The source location of js files.
@@ -466,7 +466,7 @@ List of source locations for the default build task.
 > You can define more source locations and use them for your own tasks.
 
 
-##### watch
+#### watch
 List of watch locations for the default defined Gulp tasks.
 
 **watch.js:** The locations to watch for js file changes.
@@ -477,12 +477,12 @@ List of watch locations for the default defined Gulp tasks.
 > You can define more watch locations and use them for your own tasks.
 
 
-##### dest
+#### dest
 Destination paths for the default defined Gulp tasks.
 
 
 ### The Webpack Config
-Reactium only uses Webpack for bundling and transpiling javascript. If you need it to do more the `webpack.config.js` file is the place to do it.
+Reactium only uses Webpack for bundling and transpiling javascript. If you need it to do more, the `webpack.config.js` file is the place to do it.
 
 > The Webpack config receives the [Gulp Config](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-gulp-config) as an argument.
 
@@ -490,12 +490,45 @@ Reactium only uses Webpack for bundling and transpiling javascript. If you need 
 ### Gulp Tasks
 By default, the following Gulp Tasks are defined:
 
-* scripts: Compiles javascript using Webpack. If `config.env` is `production`, the output files are optimized and minified.
-* styles: Compiles `.scss` files into `.css` files by default. If `config.env` is `production`, the output files are optimized and minified.
-* assets: Transports assets files such as images, web fonts, and other support files to their corresponding location.
-* markup: Transports html files to their corresponding location.
-* clean: Removes all files from the `config.dest.dist` directory.
-* server: Locally runs the development environment via BrowserSync.
-* build: Executes the `clean`, `assets`, `markup`, `scripts`, and `styles` tasks.
-* default: If the `config.env` is `development`, the `build` task is run then the `serve` task is run. Otherwise, the `build` task is run.
+#### scripts
+Compiles javascript using Webpack. If `config.env` is `production`, the output files are optimized and minified.
 
+#### styles
+Compiles `.scss` files into `.css` files by default. If `config.env` is `production`, the output files are optimized and minified.
+
+#### assets
+Transports assets files such as images, web fonts, and other support files to their corresponding location.
+
+#### markup
+Transports html files to their corresponding location.
+
+#### clean
+Removes all files from the `config.dest.dist` directory.
+
+#### server
+Locally runs the development environment via Browsersync.
+
+#### build
+Executes the `clean`, `assets`, `markup`, `scripts`, and `styles` tasks.
+
+#### default
+If the `config.env` is `development`, the `build` task is run then the `serve` task is run. Otherwise, the `build` task is run.
+
+### Gulp Watch
+When the `server` task is run the following watches are started:
+
+#### style changes
+When changes to the `config.watch.style` files are detected, the `styles` task is run.
+> Browsersync does a hot reload of the style sheet.
+
+#### script changes
+When changes to the `config.watch.js` files are detected, the `scripts` task is run.
+> Browsersync does a full reload of the page.
+
+#### markup changes
+When changes to the `config.watch.markup` files are detected, the `markup` task is run.
+> Browsersync does a full reload of the page.
+
+#### asset changes
+When changes to the `config.watch.assets` files are detected, the `assets` task is run.
+> Browsersync does a full reload of the page.  
