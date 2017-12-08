@@ -412,13 +412,13 @@ We identified 4 major requirements for our workflow:
 Without a doubt we felt that Webpack was the best solution for this requirement. The deciding factor was Webpack's dependency handling.
 
 #### Moving Assets
-Gulp provides a frictionless and very simple pattern for moving assets. The deciding factor was Gulps ability to transport multiple file types to multiple destinations with very little setup or additional libraries or configuration.
+Gulp provides a frictionless and very simple pattern for moving assets. The deciding factor was Gulp's ability to transport multiple file types to multiple destinations with very little setup or additional libraries or configuration.
 
 #### Sass Compilation and Optimization
 Gulp's ability to compile Sass is pretty straight forward and doesn't require a lot of configuration. We found that with Webpack, this wasn't obviously clear and took a lot of configuration to get the right set up. Webpack also restricts the delivery of the compiled style sheet to a single destination, making it hard to save the file to multiple directories if needed.
 
 #### Hot Reloading
-Browsersync offers a large variety of simple configurations that allows you to server the development environment locally. The deciding factor was Browsersync's ability to server from a proxy instead of the application directory. This could come in handy if you need to run a node instance as well as your application within your development environment.
+Browsersync offers a large variety of simple configurations that allows you to serve the development environment locally. The deciding factor was Browsersync's ability to serve from a proxy instead of the application directory. This could come in handy if you need to run a node instance as well as your application within your development environment.
 
 ### The Gulp Config
 Source paths and destinations should be managed in the `gulp.config.js` file, giving you a single place to alter build behaviors without directly altering Gulp Tasks.
@@ -455,13 +455,13 @@ If you're running a proxy with Browsersync, you will want to define the port the
 #### src
 List of source locations for the default build task.
 
-**src.js:** The source location of js files.
-**src.markup:** The source location of html files.
-**src.style:** The source location of .scss or .less files.
-**assets:** The source location of asset files such as images, web fonts and other support files.
-**includes:** The node modules location that gets included by Webpack. Default: `./node_modules`.
-**appdir:** The path to the application that gets defined for global usage by Webpack. Default: `~/src/app`.
-**rootdir:** The root application path that gets defined for global usage by Webpack. Default: `~`.
+* **src.js:** The source location of js files.
+* **src.markup:** The source location of html files.
+* **src.style:** The source location of .scss or .less files.
+* **assets:** The source location of asset files such as images, web fonts and other support files.
+* **includes:** The node modules location that gets included by Webpack. Default: `./node_modules`.
+* **appdir:** The path to the application that gets defined for global usage by Webpack. Default: `~/src/app`.
+* **rootdir:** The root application path that gets defined for global usage by Webpack. Default: `~`.
 
 > You can define more source locations and use them for your own tasks.
 
@@ -469,10 +469,10 @@ List of source locations for the default build task.
 #### watch
 List of watch locations for the default defined Gulp tasks.
 
-**watch.js:** The locations to watch for js file changes.
-**watch.markup:** The locations to watch for html file changes.
-**style:** The locations to watch for .scss or .less file changes.
-**assets:** The locations to watch for asset files such as images, web fonts, and other support files.
+* **watch.js:** The locations to watch for js file changes.
+* **watch.markup:** The locations to watch for html file changes.
+* **style:** The locations to watch for .scss or .less file changes.
+* **assets:** The locations to watch for asset files such as images, web fonts, and other support files.
 
 > You can define more watch locations and use them for your own tasks.
 
@@ -531,4 +531,4 @@ When changes to the `config.watch.markup` files are detected, the `markup` task 
 
 #### asset changes
 When changes to the `config.watch.assets` files are detected, the `assets` task is run.
-> Browsersync does a full reload of the page.  
+> Browsersync does a full reload of the page.
