@@ -399,3 +399,103 @@ You can pass initial state to the component via attributes but that's not necess
 ## The Build Process
 ![](https://image.ibb.co/jeddNw/reactium_build_process_2.png)
 
+Reactium uses the combination of [Gulp](https://gulpjs.com/), [Webpack 3](https://webpack.js.org/), & [BrowserSync](https://browsersync.io/) to build and run the development environment.
+You might ask: Why not use just Webpack or just Gulp?
+
+We identified 4 major requirements for our workflow:
+1. Bundling and transpiling Javascript.
+2. Moving assets from one location to another.
+3. Sass compilation and optimization.
+4. Hot reload of the development environment.
+
+#### Bundling and Transpiling Javascript
+Without a doubt we felt that Webpack was the best solution for this requirement. The deciding factor was Webpack's dependency handling.
+
+#### Moving Assets
+Gulp provides a frictionless and very simple pattern for moving assets. The deciding factor was Gulps ability to transport multiple file types to multiple destinations with very little setup or additional libraries or configuration.
+
+#### Sass Compilation and Optimization
+Gulp's ability to compile Sass is pretty straight forward and doesn't require a lot of configuration. We found that with Webpack, this wasn't obviously clear and took a lot of configuration to get the right set up. Webpack also restricts the delivery of the compiled style sheet to a single destination, making it hard to save the file to multiple directories if needed.
+
+#### Hot Reloading
+BrowserSync offers a large variety of simple configurations that allows you to server the development environment locally. The deciding factor was BrowserSync's ability to server from a proxy instead of the application directory. This could come in handy if you need to run a node instance as well as your application within your development environment.
+
+### The Gulp Config
+Source paths and destinations should be managed in the `gulp.config.js` file, giving you a single place to alter build behaviors without directly altering Gulp Tasks.
+
+
+##### env
+The environment type: development/production.
+
+_Default: development_
+
+##### entries
+List of files that will be bundled and transpiled by Webpack.
+
+_Default: `src/app/*.js`_
+
+> Top level .js files in the `~/src/app` directory
+
+
+##### browsers
+Babel browser support when transpiling.
+
+Default: last 1 version
+
+> The previous and current version of all major browsers.
+
+
+##### port
+List or ports used when running the development environment.
+
+**port.browsersync:** The port to run BrowserSync on.
+If you're running a proxy with BrowserSync, you will want to define the port the proxy runs on as well then reference it in your serve task.
+
+
+##### src
+List of source locations for the default build task.
+
+**src.js:** The source location of js files.
+**src.markup:** The source location of html files.
+**src.style:** The source location of .scss or .less files.
+**assets:** The source location of asset files such as images, web fonts and other support files.
+**includes:** The node modules location that gets included by Webpack. Default: `./node_modules`.
+**appdir:** The path to the application that gets defined for global usage by Webpack. Default: `~/src/app`.
+**rootdir:** The root application path that gets defined for global usage by Webpack. Default: `~`.
+
+> You can define more source locations and use them for your own tasks.
+
+
+##### watch
+List of watch locations for the default defined Gulp tasks.
+
+**watch.js:** The locations to watch for js file changes.
+**watch.markup:** The locations to watch for html file changes.
+**style:** The locations to watch for .scss or .less file changes.
+**assets:** The locations to watch for asset files such as images, web fonts, and other support files.
+
+> You can define more watch locations and use them for your own tasks.
+
+
+##### dest
+Destination paths for the default defined Gulp tasks.
+
+
+### The Webpack Config
+Reactium only uses Webpack for bundling and transpiling javascript. If you need it to do more the `webpack.config.js` file is the place to do it.
+
+> The Webpack config receives the [Gulp Config](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-gulp-config) as an argument.
+
+
+### Gulp Tasks
+By default, the following Gulp Tasks are defined:
+
+* scripts: Compiles javascript using Webpack. If `config.env` is `production`, the output files are optimized and minified.
+* styles: Compiles `.scss` files into `.css` files by default. If `config.env` is `production`, the output files are optimized and minified.
+* assets: Transports assets files such as images, web fonts, and other support files to their corresponding location.
+* markup: Transports html files to their corresponding location.
+* clean: Removes all files from the `config.dest.dist` directory.
+* server: Locally runs the development environment via BrowserSync.
+* build: Executes the `clean`, `assets`, `markup`, `scripts`, and `styles` tasks.
+* default: If the `config.env` is `development`, the `build` task is run then the `serve` task is run. Otherwise, the `build` task is run.
+

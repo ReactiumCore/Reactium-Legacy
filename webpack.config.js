@@ -27,8 +27,8 @@ module.exports = (config) => {
         entry: config.entries,
         resolve: {
             alias: {
-                appdir: path.resolve(__dirname, 'src/app'),
-                rootdir: path.resolve(__dirname)
+                appdir: config.src.appdir,
+                rootdir: config.src.rootdir,
             }
         },
         output:  {

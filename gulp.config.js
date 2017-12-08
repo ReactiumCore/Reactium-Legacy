@@ -1,27 +1,15 @@
 'use strict';
 
-const fs      = require('fs');
 const path    = require('path');
-const slug    = require('slug');
 const globby  = require('globby');
 
-// Scan src .js files and return them as an object
-const entries = () => {
-    let obj    = {};
-    let src    = __dirname + '/src/app';
-
-    fs.readdirSync(src, 'utf8').forEach((file) => {
-        let farr = file.split('.');
-        let ext = String(farr.pop()).toLowerCase();
-        if (ext !== 'js') { return; }
-
-        let name = slug(farr.join('-'));
-
-        obj[name] = path.resolve(__dirname, `src/app/${file}`);
-    });
-
-    return obj;
-};
+// Create the webpack entries object.
+const entries = pattern => globby.sync(pattern)
+    .reduce((files, f) => {
+        let file = path.basename(f, '.js');
+        files[file] = path.resolve(f);
+        return files;
+    }, {});
 
 const globDefineFiles = pattern => globby.sync(pattern)
     .reduce((files, f) => {
@@ -32,8 +20,8 @@ const globDefineFiles = pattern => globby.sync(pattern)
 
 module.exports = () => {
     return {
-        env: 'development',
-        entries: entries(),
+        env: "development",
+        entries: entries("src/app/*.js"),
         defines: {
             "global": "window",
             restAPI: JSON.stringify(process.env.REST_API_URL || "http://demo3914762.mockable.io"),
@@ -44,7 +32,6 @@ module.exports = () => {
             allServices: JSON.stringify(globDefineFiles('src/app/components/**/services.js')),
             allReducers: JSON.stringify(globDefineFiles('src/app/components/**/reducers.js')),
         },
-        dist: 'dist',
         browsers: "last 1 version",
         port: {
             browsersync: 3030,
@@ -82,9 +69,12 @@ module.exports = () => {
                 "!{src/assets/style,src/assets/style/**}",
                 "!{src/assets/js,src/assets/js/**}"
             ],
-            includes: "./node_modules"
+            includes: "./node_modules",
+            appdir: path.resolve(__dirname, 'src/app'),
+            rootdir: path.resolve(__dirname),
         },
         dest: {
+            dist: 'dist',
             js: 'dist/assets/js',
             markup: 'dist',
             style: 'dist/assets/style',

@@ -1,5 +1,4 @@
 
-const fs               = require('fs');
 const del              = require('del');
 const path             = require('path');
 const gulp             = require('gulp');
@@ -81,7 +80,7 @@ gulp.task('markup', () => {
 
 // Remove all distribution files
 gulp.task('clean', (done) => {
-    del.sync([config.dist]);
+    del.sync([config.dest.dist]);
     done();
 });
 
@@ -96,7 +95,7 @@ gulp.task('serve', () => {
     browserSync({
         notify: false,
         timestamps: true,
-        server: path.resolve(config.dist),
+        server: path.resolve(config.dest.dist),
         startPath: 'index.html',
         port: config.port.browsersync,
         logPrefix: '00:00:00',
@@ -119,7 +118,7 @@ gulp.task('serve', () => {
 
 // Build
 gulp.task('build', (done) => {
-    runSequence(['clean'], ['assets'], ['markup'], ['scripts', 'styles'], () => {
+    runSequence(['clean'], ['assets', 'markup'], ['scripts', 'styles'], () => {
         done();
     });
 });
