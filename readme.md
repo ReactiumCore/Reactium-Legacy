@@ -448,8 +448,9 @@ _**Default:**_ `last 1 version`
 #### port
 List or ports used when running the development environment.
 
-**port.browsersync:** The port to run Browsersync on.
-If you're running a proxy with Browsersync, you will want to define the port the proxy runs on as well then reference it in your serve task.
+* **port.browsersync:** The port to run Browsersync on.
+
+> If you're running a proxy with Browsersync, you will want to define the port the proxy runs on as well then reference it in your serve task.
 
 
 #### src
@@ -458,10 +459,10 @@ List of source locations for the default build task.
 * **src.js:** The source location of js files.
 * **src.markup:** The source location of html files.
 * **src.style:** The source location of .scss or .less files.
-* **assets:** The source location of asset files such as images, web fonts and other support files.
-* **includes:** The node modules location that gets included by Webpack. Default: `./node_modules`.
-* **appdir:** The path to the application that gets defined for global usage by Webpack. Default: `~/src/app`.
-* **rootdir:** The root application path that gets defined for global usage by Webpack. Default: `~`.
+* **src.assets:** The source location of asset files such as images, web fonts and other support files.
+* **src.includes:** The node modules location that gets included by Webpack. **Default:** `./node_modules`.
+* **src.appdir:** The path to the application that gets defined for global usage by Webpack. **Default:** `~/src/app`.
+* **src.rootdir:** The root application path that gets defined for global usage by Webpack. **Default:** `~`.
 
 > You can define more source locations and use them for your own tasks.
 
@@ -471,8 +472,8 @@ List of watch locations for the default defined Gulp tasks.
 
 * **watch.js:** The locations to watch for js file changes.
 * **watch.markup:** The locations to watch for html file changes.
-* **style:** The locations to watch for .scss or .less file changes.
-* **assets:** The locations to watch for asset files such as images, web fonts, and other support files.
+* **watch.style:** The locations to watch for `.scss` or `.less` file changes.
+* **watch.assets:** The locations to watch for asset files such as images, web fonts, and other support files.
 
 > You can define more watch locations and use them for your own tasks.
 
@@ -497,7 +498,7 @@ Compiles javascript using Webpack. If `config.env` is `production`, the output f
 Compiles `.scss` files into `.css` files by default. If `config.env` is `production`, the output files are optimized and minified.
 
 #### assets
-Transports assets files such as images, web fonts, and other support files to their corresponding location.
+Transports asset files such as images, web fonts, and other support files to their corresponding location.
 
 #### markup
 Transports html files to their corresponding location.
@@ -505,17 +506,17 @@ Transports html files to their corresponding location.
 #### clean
 Removes all files from the `config.dest.dist` directory.
 
-#### server
-Locally runs the development environment via Browsersync.
+#### serve
+Runs the development environment via Browsersync.
 
 #### build
-Executes the `clean`, `assets`, `markup`, `scripts`, and `styles` tasks.
+Runs the `clean`, `assets`, `markup`, `scripts`, and `styles` tasks.
 
 #### default
-If the `config.env` is `development`, the `build` task is run then the `serve` task is run. Otherwise, the `build` task is run.
+If the `config.env` is `development`, the `build` task is run followed by the `serve`. Otherwise, the `build` task is run.
 
 ### Gulp Watch
-When the `server` task is run the following watches are started:
+When the `serve` task is run, the following watches are started:
 
 #### style changes
 When changes to the `config.watch.style` files are detected, the `styles` task is run.
