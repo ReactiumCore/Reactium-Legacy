@@ -448,9 +448,7 @@ _**Default:**_ `last 1 version`
 ### port
 List or ports used when running the development environment.
 
-* **port.browsersync:** The port to run Browsersync on.
-
-_**Default:**_ `3030`
+* **port.browsersync:** The port to run Browsersync on. **Default:** `3030`
 
 > If you're running a proxy with Browsersync, you will want to define the port the proxy runs on as well then reference it in your serve task.
 
