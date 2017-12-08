@@ -328,7 +328,7 @@ export default {
 ## Creating Components
 
 
-1. Before creating a component, grab the Atomic Reactor CLI:
+1. Before creating a component, grab the [Atomic Reactor CLI](https://github.com/Atomic-Reactor/CLI):
 ```
 $ npm i -g atomic-reactor-cli
 ```
@@ -420,16 +420,16 @@ Gulp's ability to compile Sass is pretty straight forward and doesn't require a 
 #### Hot Reloading
 Browsersync offers a large variety of simple configurations that allows you to serve the development environment locally. The deciding factor was Browsersync's ability to serve from a proxy instead of the application directory. This could come in handy if you need to run a node instance as well as your application within your development environment.
 
-### The Gulp Config
+## The Gulp Config
 Source paths and destinations should be managed in the `gulp.config.js` file, giving you a single place to alter build behaviors without directly altering Gulp Tasks.
 
 
-#### env
+### env
 The environment type: development/production.
 
 _**Default:**_ `development`
 
-#### entries
+### entries
 List of files that will be bundled and transpiled by Webpack.
 
 _**Default:**_ `src/app/*.js`
@@ -437,7 +437,7 @@ _**Default:**_ `src/app/*.js`
 > Top level .js files in the `~/src/app` directory
 
 
-#### browsers
+### browsers
 Babel browser support when transpiling.
 
 _**Default:**_ `last 1 version`
@@ -445,7 +445,7 @@ _**Default:**_ `last 1 version`
 > The previous and current version of all major browsers.
 
 
-#### port
+### port
 List or ports used when running the development environment.
 
 * **port.browsersync:** The port to run Browsersync on.
@@ -453,7 +453,7 @@ List or ports used when running the development environment.
 > If you're running a proxy with Browsersync, you will want to define the port the proxy runs on as well then reference it in your serve task.
 
 
-#### src
+### src
 List of source locations for the default build task.
 
 * **src.js:** The source location of js files.
@@ -467,7 +467,7 @@ List of source locations for the default build task.
 > You can define more source locations and use them for your own tasks.
 
 
-#### watch
+### watch
 List of watch locations for the default defined Gulp tasks.
 
 * **watch.js:** The locations to watch for js file changes.
@@ -478,58 +478,58 @@ List of watch locations for the default defined Gulp tasks.
 > You can define more watch locations and use them for your own tasks.
 
 
-#### dest
+### dest
 Destination paths for the default defined Gulp tasks.
 
 
-### The Webpack Config
+## The Webpack Config
 Reactium only uses Webpack for bundling and transpiling javascript. If you need it to do more, the `webpack.config.js` file is the place to do it.
 
 > The Webpack config receives the [Gulp Config](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#the-gulp-config) as an argument.
 
 
-### Gulp Tasks
+## Gulp Tasks
 By default, the following Gulp Tasks are defined:
 
-#### scripts
+### scripts
 Compiles javascript using Webpack. If `config.env` is `production`, the output files are optimized and minified.
 
-#### styles
+### styles
 Compiles `.scss` files into `.css` files by default. If `config.env` is `production`, the output files are optimized and minified.
 
-#### assets
+### assets
 Transports asset files such as images, web fonts, and other support files to their corresponding location.
 
-#### markup
+### markup
 Transports html files to their corresponding location.
 
-#### clean
+### clean
 Removes all files from the `config.dest.dist` directory.
 
-#### serve
+### serve
 Runs the development environment via Browsersync.
 
-#### build
+### build
 Runs the `clean`, `assets`, `markup`, `scripts`, and `styles` tasks.
 
-#### default
+### default
 If the `config.env` is `development`, the `build` task is run followed by the `serve`. Otherwise, the `build` task is run.
 
-### Gulp Watch
+## Gulp Watch
 When the `serve` task is run, the following watches are started:
 
-#### style changes
+### style changes
 When changes to the `config.watch.style` files are detected, the `styles` task is run.
 > Browsersync does a hot reload of the style sheet.
 
-#### script changes
+### script changes
 When changes to the `config.watch.js` files are detected, the `scripts` task is run.
 > Browsersync does a full reload of the page.
 
-#### markup changes
+### markup changes
 When changes to the `config.watch.markup` files are detected, the `markup` task is run.
 > Browsersync does a full reload of the page.
 
-#### asset changes
+### asset changes
 When changes to the `config.watch.assets` files are detected, the `assets` task is run.
 > Browsersync does a full reload of the page.
