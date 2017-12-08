@@ -1,5 +1,5 @@
+![](https://image.ibb.co/ee2WaG/atomic_reactor.png)
 # Reactium
-![](https://preview.ibb.co/kcaAQG/atomic_reactor.png)
 
 A framework for creating React + Redux apps.
 
