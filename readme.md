@@ -423,6 +423,12 @@ Browsersync offers a large variety of simple configurations that allows you to s
 ## The Gulp Config
 Source paths and destinations should be managed in the `gulp.config.js` file, giving you a single place to alter build behaviors without directly altering Gulp Tasks.
 
+### spa
+Determines if this is a Single Page App or not.
+If set to `true` all .html routes will be redirected to `index.html`.
+If set to a valid url string, routes will be redirected to the specified url.
+
+_**Default:**_ `false`
 
 ### env
 The environment type: development/production.

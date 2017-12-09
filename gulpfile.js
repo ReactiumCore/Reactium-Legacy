@@ -86,9 +86,15 @@ gulp.task('clean', (done) => {
 
 // Server locally
 gulp.task('serve', () => {
+
+    let index = '/index.html';
+        index = (typeof config.spa === 'string') ? config.spa : index;
+
+    let ext = path.extname(index);
+
     browserSync.use(spa({
         history: {
-            index: '/index.html',
+            index: index,
         }
     }));
 
@@ -96,15 +102,19 @@ gulp.task('serve', () => {
         notify: false,
         timestamps: true,
         server: path.resolve(config.dest.dist),
-        startPath: 'index.html',
+        startPath: index,
         port: config.port.browsersync,
         logPrefix: '00:00:00',
         ui: {port: config.port.browsersync + 1},
         middleware: [
             (req, res, next) => {
-                if ( /.html$/.test(req.url) && req.url !== '/index.html' ) {
-                    req.url = '/index.html';
+                if (config.spa === true || typeof config.spa === 'string') {
+                    let reg = new RegExp(ext + '$', "i");
+                    if (reg.test(req.url) && req.url !== index) {
+                        req.url = index;
+                    }
                 }
+
                 next();
             },
         ],
