@@ -90,8 +90,6 @@ gulp.task('serve', () => {
     let index = '/index.html';
         index = (typeof config.spa === 'string') ? config.spa : index;
 
-    let ext = path.extname(index);
-
     browserSync.use(spa({
         history: {
             index: index,
@@ -109,6 +107,7 @@ gulp.task('serve', () => {
         middleware: [
             (req, res, next) => {
                 if (config.spa === true || typeof config.spa === 'string') {
+                    let ext = path.extname(index);
                     let reg = new RegExp(ext + '$', "i");
                     if (reg.test(req.url) && req.url !== index) {
                         req.url = index;
