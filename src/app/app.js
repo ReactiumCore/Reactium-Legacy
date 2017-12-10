@@ -155,18 +155,11 @@ export const App = () => {
         const store = createStoreWithMiddleware(rootReducer, initialState, storeEnhancer);
 
         // Render the React Components
-        components.forEach((item, i) => {
-            // Add DevTools to first bound component in development
-            let Tools = null;
-            if (i === 0 && process.env.NODE_ENV === 'development') {
-                Tools = DevTools;
-            }
-
+        components.forEach((item) => {
             ReactDOM.render(
                 <Provider store={store}>
                     <div>
                         {item.component}
-                        <Tools />
                     </div>
                 </Provider>,
                 item.element

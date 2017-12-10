@@ -13,14 +13,18 @@ import LogMonitor from 'redux-devtools-log-monitor-react16';
  * React Component: DevTools
  * -----------------------------------------------------------------------------
  */
-const DevTools = createDevTools(
-    <DockMonitor
-        defaultIsVisible={false}
-        toggleVisibilityKey="ctrl-h"
-        changePositionKey="ctrl-q"
-        changeMonitorKey="ctrl-m">
-        <LogMonitor />
-    </DockMonitor>
-);
+let DevTools = () => { return null; };
+
+if (process.env.NODE_ENV === 'development') {
+    DevTools = createDevTools(
+        <DockMonitor
+            defaultIsVisible={false}
+            toggleVisibilityKey="ctrl-h"
+            changePositionKey="ctrl-q"
+            changeMonitorKey="ctrl-m">
+            <LogMonitor />
+        </DockMonitor>
+    );
+}
 
 export default DevTools;
