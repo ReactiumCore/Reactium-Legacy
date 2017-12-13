@@ -37,6 +37,7 @@ module.exports = () => {
         port: {
             browsersync: 3030,
         },
+        cssPreProcessor: 'sass',
         watch: {
             js: [
                 "src/app/**/*",
@@ -48,6 +49,7 @@ module.exports = () => {
             style: [
                 "src/assets/style/**/*.less",
                 "src/assets/style/**/*.scss",
+                "src/assets/style/**/*.sass",
             ],
             assets: [
                 "src/assets/**/*",
@@ -63,7 +65,9 @@ module.exports = () => {
                 "src/**/*.html",
             ],
             style: [
-                "src/assets/style/*.scss"
+                "src/assets/style/*.less",
+                "src/assets/style/*.scss",
+                "src/assets/style/*.sass",
             ],
             assets: [
                 "src/assets/**/*",

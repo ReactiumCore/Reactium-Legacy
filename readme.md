@@ -22,6 +22,8 @@ DDD focuses on three core principles:
 
 
 # Quick Start
+
+From your project directory:
 ```
 $ npm run launch
 ```
@@ -141,7 +143,7 @@ Reactium component architecture is pretty simple when it comes to a function or 
 1. Create the component domain in the `~/src/app/components` directory.
 2. Create an `index.js` file with your component code.
 
-When it comes to a Redux Class Component the following files are required:
+When it comes to a Redux Class Component the following architecture is applied:
 
 | File | Description |
 |:----|:----|
@@ -190,7 +192,8 @@ actions.Test.mount({some: "params"});
 
 > Q: What's this `appdir` thing all about?
 
-> A: `appdir` is a constant defined in the Webpack configuration that references the `~/src/app` directory. It helps clarify where you're importing something from by eliminating the need to do something like: `import { something } from '../../../components/SomeOtherComponent'`.
+> A: `appdir` is a constant defined in the Webpack configuration that references the `~/src/app` directory. It helps clarify where you're importing something from by eliminating the need to do something like:
+> `import { something } from '../../../components/SomeOtherComponent'`.
 
 
 ### The actionTypes.js File
@@ -259,6 +262,7 @@ A typical `route.js` file in `MyComponent` may look like this:
 ```js
 // Import your component
 import MyComponent from './index';
+
 // Import the aggregated actions (optional)
 import { actions } from 'appdir/app';
 
@@ -287,16 +291,38 @@ A typical `services.js` file may look like this:
 import axios from 'axios';
 import { restHeaders } from "appdir/app";
 
+const restAPI = 'http://demo3914762.mockable.io';
 
 const fetchHello = () => {
     let hdr = restHeaders();
     return axios.get(`${restAPI}/hello`, {headers: hdr}).then(({data}) => data);
 };
 
+const fetchGoodBye = () => {
+    let hdr = restHeaders();
+    return axios.get(`${restAPI}/goodbye`, {headers: hdr}).then(({data}) => data);
+};
+
 export default {
     fetchHello,
+    fetchGoodBye,
 }
 ```
+
+In your actions.js file you would do something like:
+```
+import { actionTypes } from 'appdir/app';
+import { services } from 'appdir/app';
+
+export default {
+    mount: params => (dispatch) => {
+        services.Test.fetchHello().then((data) => {
+            dispatch({type: actionTypes.TEST_MOUNT, data: data});
+        });
+    },
+}
+```
+
 > Reactium uses [axios](https://www.npmjs.com/package/axios) to make XMLHttpRequests from the browser. You can swap that out with whatever you want.
 
 To access the services, import them into your component:
@@ -409,7 +435,7 @@ We identified 4 major requirements for our workflow:
 4. [Hot reload of the development environment](https://github.com/Atomic-Reactor/Reactium/blob/master/readme.md#hot-reloading).
 
 #### Bundling and Transpiling Javascript
-Without a doubt we felt that Webpack was the best solution for this requirement. The deciding factor was Webpack's dependency handling.
+Without a doubt we felt that Webpack was the best solution for this requirement. The deciding factor was Webpack's dependency handling and tree shaking (removing unused modules).
 
 #### Moving Assets
 Gulp provides a frictionless and very simple pattern for moving assets. The deciding factor was Gulp's ability to transport multiple file types to multiple destinations with very little setup or additional libraries or configuration.
@@ -456,7 +482,13 @@ List or ports used when running the development environment.
 
 * **port.browsersync:** The port to run Browsersync on. **Default:** `3030`
 
-> If you're running a proxy with Browsersync, you will want to define the port the proxy runs on as well then reference it in your serve task.
+> If you're running a proxy with Browsersync, you will want to define the port the proxy runs on, then reference it in your serve task.
+
+
+### cssPreProcessor
+Determines which CSS pre-processor to use. Valid values: sass/less.
+
+_**Default:**_ `sass`
 
 
 ### src
@@ -502,6 +534,8 @@ Compiles javascript using Webpack. If `config.env` is `production`, the output f
 
 ### styles
 Compiles `.scss` files into `.css` files by default. If `config.env` is `production`, the output files are optimized and minified.
+
+You can switch this to `.less` by specifying 'less' as the Gulp Config `cssPreProcessor` value.
 
 ### assets
 Transports asset files such as images, web fonts, and other support files to their corresponding location.

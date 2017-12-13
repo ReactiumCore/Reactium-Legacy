@@ -8,6 +8,7 @@ const runSequence      = require('run-sequence');
 const browserSync      = require('browser-sync');
 const spa              = require('browser-sync-spa');
 const prefix           = require('gulp-autoprefixer');
+const less             = require('gulp-less');
 const sass             = require('gulp-sass');
 const csso             = require('gulp-csso');
 const sourcemaps       = require('gulp-sourcemaps');
@@ -51,15 +52,18 @@ gulp.task('scripts', (done) => {
 // Sass styles
 gulp.task('styles', () => {
     let isDev = (config.env === 'development');
+    let isSass = (config.cssPreProcessor === 'sass');
+    let isLess = (config.cssPreProcessor === 'less');
 
     return gulp.src(config.src.style)
-    .pipe(gulpif(isDev, sourcemaps.init()))
-    .pipe(sass({includePaths: config.src.includes}).on('error', sass.logError))
-    .pipe(prefix(config.browsers))
-    .pipe(gulpif(!isDev, csso()))
-    .pipe(gulpif(isDev, sourcemaps.write()))
-    .pipe(gulp.dest(config.dest.style))
-    .pipe(gulpif(isDev, browserSync.stream()));
+        .pipe(gulpif(isDev, sourcemaps.init()))
+        .pipe(gulpif(isSass, sass({includePaths: config.src.includes}).on('error', sass.logError)))
+        .pipe(gulpif(isLess, less({paths: config.src.includes})))
+        .pipe(prefix(config.browsers))
+        .pipe(gulpif(!isDev, csso()))
+        .pipe(gulpif(isDev, sourcemaps.write()))
+        .pipe(gulp.dest(config.dest.style))
+        .pipe(gulpif(isDev, browserSync.stream()));
 });
 
 // Copy assets

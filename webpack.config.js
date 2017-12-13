@@ -23,7 +23,7 @@ module.exports = (config) => {
     plugins.push(new webpack.DefinePlugin(config.defines));
 
     return {
-        target: 'node',
+        target: 'web',
         entry: config.entries,
         resolve: {
             alias: {
