@@ -7,14 +7,13 @@ const UglifyJSPlugin    = require('uglifyjs-webpack-plugin');
 module.exports = (config) => {
     let plugins    = [];
     let tools      = '';
+    let env        = config.env || 'production';
 
-    if (!config.env) {
+    if (env !== 'development') {
         plugins.push(new UglifyJSPlugin());
     } else {
         tools = 'source-map';
     }
-
-    let env = config.env || 'production';
 
     config.defines['process.env'] = {
         NODE_ENV: JSON.stringify(env)
