@@ -267,6 +267,9 @@ import MyComponent from './index';
 import { actions } from 'appdir/app';
 
 export default {
+    // Make this higher number to have route evaluated later (default 0)
+    order: 0,
+
     // Route pattern that should route to
     path: '/my-component/:paramA/:paramB',
 
