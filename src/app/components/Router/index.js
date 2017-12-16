@@ -31,7 +31,7 @@ export default class AppRouter extends Component {
                         {
                             this.sortRoutes(routes).map((route) => {
                                 if (typeof route.path === 'string') {
-                                    return (<Route {...route} />);
+                                    return <Route {...route} />;
                                 }
 
                                 if (Array.isArray(route.path)) {
