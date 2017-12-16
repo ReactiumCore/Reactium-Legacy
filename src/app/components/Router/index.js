@@ -3,31 +3,50 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import RouteObserver from './RouteObserver';
 import { routes } from 'appdir/app';
 import NotFound from 'appdir/components/NotFound';
+import _ from 'underscore';
 
 export default class AppRouter extends Component {
+
     // Add order property greater than 0 to route
     // to weight it down (have it evaluate later)
-    sortRoutes(routeA, routeB) {
-        let orderA = routeA['order'] || 0;
-        let orderB = routeB['order'] || 0;
-        return orderA - orderB;
+    sortRoutes(routes) {
+        return _.sortBy(Object.keys(routes).map((route) => {
+            return Object.assign(
+                {},
+                routes[route],
+                {
+                    key: route,
+                    order: routes[route]['order'] || 0
+                },
+            );
+        }), 'order');
     }
 
     render() {
         return (
             <Router>
-                <main>
+                <div>
                     <RouteObserver />
                     <Switch>
                         {
-                            Object.keys(routes)
-                                .sort((a,b) => this.sortRoutes(routes[a], routes[b]))
-                                .map(route => (<Route key={route} {...routes[route]} />))
+                            this.sortRoutes(routes).map((route) => {
+                                if (typeof route.path === 'string') {
+                                    return (<Route {...route} />);
+                                }
+
+                                if (Array.isArray(route.path)) {
+                                    return route.path.map((p) => {
+                                        let params = Object.assign({}, route, {path: p});
+                                        return <Route {...params} />;
+                                    });
+                                }
+                            })
                         }
-                        <Route component={NotFound}/>
+                        <Route component={NotFound} />
                     </Switch>
-                </main>
+                </div>
             </Router>
         );
     }
 }
+
