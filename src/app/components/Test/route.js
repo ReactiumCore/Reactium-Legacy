@@ -3,7 +3,7 @@ import { actions } from 'appdir/app';
 
 export default {
     // Route pattern
-    path: '/index.html',
+    path: ['/index.html'],
 
     // Route should be exact
     exact: true,
