@@ -88,6 +88,24 @@ gulp.task('clean', (done) => {
     done();
 });
 
+// Manages changes for a single file instead of a directory
+const watcher = (e) => {
+    let src     = path.relative(path.resolve(__dirname), e.path);
+    let fpath    = `${config.dest.dist}/${path.relative(path.resolve(config.src.app), e.path)}`;
+    let dest    = path.normalize(path.dirname(fpath));
+
+    if (fs.existsSync(fpath)) {
+        del.sync([fpath]);
+    }
+
+    if (e.type !== 'deleted') {
+        gulp.src(src).pipe(gulp.dest(dest));
+    }
+
+    browserSync.reload();
+    console.log(`[00:00:00] File ${e.type}: /${src}`);
+};
+
 // Server locally
 gulp.task('serve', () => {
 
@@ -123,10 +141,9 @@ gulp.task('serve', () => {
         ],
     });
 
-    gulp.watch(config.watch.style, ['styles']);
     gulp.watch(config.watch.js, ['scripts']);
-    gulp.watch(config.watch.markup, ['markup'], browserSync.reload);
-    gulp.watch(config.watch.assets, ['assets'], browserSync.reload);
+    gulp.watch(config.watch.style, ['styles']);
+    gulp.watch([config.watch.markup, config.watch.assets], watcher);
 });
 
 // Build
