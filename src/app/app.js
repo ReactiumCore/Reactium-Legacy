@@ -125,7 +125,29 @@ export const actionTypes = Object.keys(importedActionTypes).reduce((types, key) 
 
 export const services = importDefined(allServices);
 
-export const routes = importDefined(allRoutes);
+let importedRoutes = importDefined(allRoutes);
+export const routes = Object.keys(importedRoutes)
+.map(route => importedRoutes[route])
+.reduce((rts, route, key) => {
+    // Support multiple routable components per route file
+    if ( Array.isArray(route) ) {
+        return [...rts,
+            ...route.map((subRoute, subKey) => ({
+                order: 0,
+                key: `${key}+${subKey}`,
+                ...subRoute,
+            }))
+        ];
+    }
+
+    // Support one routable component
+    return [...rts, {
+        order: 0,
+        key,
+        ...route,
+    }];
+}, [])
+.sort((a,b) => a.order - b.order);
 
 export const restHeaders = () => {
     return {};
