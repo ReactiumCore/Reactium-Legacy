@@ -6,7 +6,6 @@ import NotFound from 'appdir/components/NotFound';
 
 export default class AppRouter extends Component {
     render() {
-        console.log(routes);
         return (
             <Router>
                 <div>
