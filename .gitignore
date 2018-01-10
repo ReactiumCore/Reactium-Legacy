@@ -60,3 +60,6 @@ typings/
 
 # Output of build
 dist
+
+# Webstorm project files
+.idea
