@@ -577,4 +577,3 @@ When changes to the `config.watch.markup` files are detected, the `markup` task 
 When changes to the `config.watch.assets` files are detected, the `assets` task is run.
 > Browsersync does a full reload of the page.
 
--
