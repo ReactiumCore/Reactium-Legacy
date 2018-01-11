@@ -23,12 +23,11 @@
   },
   "dependencies": {
     "moment": "*",
+    "nodemon": "^1.14.11",
     "redux-devtools": "^3.4.1",
     "redux-devtools-dock-monitor": "^1.1.2",
     "redux-devtools-log-monitor-react16": "^1.3.0-react16-0.0.1",
-    "underscore": "*"
-  },
-  "devDependencies": {
+    "underscore": "*",
     "axios": "^0.17.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -38,10 +37,11 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.5.0",
-    "browser-sync": "~2.18.8",
+    "browser-sync": "^2.23.5",
     "browser-sync-spa": "^1.0.3",
     "concept": "^0.1.3",
     "del": "^2.2.2",
+    "express": "^4.16.2",
     "globby": "^7.1.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",

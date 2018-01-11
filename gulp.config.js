@@ -35,7 +35,8 @@ module.exports = () => {
         },
         browsers: "last 1 version",
         port: {
-            browsersync: 3030,
+            browsersync: 3000,
+            proxy: 3030,
         },
         cssPreProcessor: 'sass',
         watch: {
