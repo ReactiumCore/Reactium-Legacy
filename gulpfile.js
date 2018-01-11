@@ -14,9 +14,10 @@ const csso             = require('gulp-csso');
 const sourcemaps       = require('gulp-sourcemaps');
 const env              = require('yargs').argv;
 const config           = require('./gulp.config')();
+const nodemon          = require('nodemon');
 
 // Update config from environment variables
-config.port.browsersync = (env.hasOwnProperty('port')) ? env.port : config.port.browsersync;
+config.port.browsersync = (env.hasOwnProperty('APP_PORT')) ? env.APP_PORT : config.port.browsersync;
 config.env = (env.hasOwnProperty('environment')) ? env.environment : config.env;
 
 // Set webpack config after environment variables
@@ -106,10 +107,34 @@ const watcher = (e) => {
     console.log(`[00:00:00] File ${e.type}: /${src}`);
 };
 
+// nodemon -> start server and reload on change
+gulp.task('nodemon', (done) => {
+    if (config.env !== 'development') { done(); return; }
+
+    let callbackCalled = false;
+    nodemon({
+        watch : config.dest.dist,
+        env: {
+            port: config.port.proxy
+        },
+        script: __dirname + '/index.js',
+        ext: 'js ejs json jsx html css scss jpg png gif svg txt md'
+    }).on('start', function () {
+        if (!callbackCalled) {
+            callbackCalled = true;
+            done();
+        }
+    }).on('quit', () => {
+        process.exit();
+    }).on('restart', function () {
+        browserSync.reload();
+    });
+});
+
 // Server locally
 gulp.task('serve', () => {
 
-    let index = '/index.html';
+    let index = '/';
         index = (typeof config.spa === 'string') ? config.spa : index;
 
     browserSync.use(spa({
@@ -121,24 +146,10 @@ gulp.task('serve', () => {
     browserSync({
         notify: false,
         timestamps: true,
-        server: path.resolve(config.dest.dist),
-        startPath: index,
-        port: config.port.browsersync,
         logPrefix: '00:00:00',
+        port: config.port.browsersync,
         ui: {port: config.port.browsersync + 1},
-        middleware: [
-            (req, res, next) => {
-                if (config.spa === true || typeof config.spa === 'string') {
-                    let ext = path.extname(index);
-                    let reg = new RegExp(ext + '$', "i");
-                    if (reg.test(req.url) && req.url !== index) {
-                        req.url = index;
-                    }
-                }
-
-                next();
-            },
-        ],
+        proxy: `localhost:${config.port.proxy}`
     });
 
     gulp.watch(config.watch.js, ['scripts']);
@@ -156,7 +167,7 @@ gulp.task('build', (done) => {
 // The default task
 gulp.task('default', (done) => {
     if (config.env === 'development') {
-        runSequence(['build'], () => {
+        runSequence(['build'], ['nodemon'], () => {
             gulp.start('serve');
             done();
         });
