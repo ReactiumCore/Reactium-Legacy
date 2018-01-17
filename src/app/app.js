@@ -13,6 +13,7 @@ import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import DevTools from 'appdir/components/DevTools';
+import NotFound from 'appdir/components/NotFound';
 
 /**
  * -----------------------------------------------------------------------------
@@ -128,13 +129,12 @@ export const services = importDefined(allServices);
 let importedRoutes = importDefined(allRoutes);
 export const routes = Object.keys(importedRoutes)
 .map(route => importedRoutes[route])
-.reduce((rts, route, key) => {
+.reduce((rts, route) => {
     // Support multiple routable components per route file
     if ( Array.isArray(route) ) {
         return [...rts,
             ...route.map((subRoute, subKey) => ({
                 order: 0,
-                key: `${key}+${subKey}`,
                 ...subRoute,
             }))
         ];
@@ -143,11 +143,21 @@ export const routes = Object.keys(importedRoutes)
     // Support one routable component
     return [...rts, {
         order: 0,
-        key,
         ...route,
     }];
 }, [])
-.sort((a,b) => a.order - b.order);
+.reduce((rts, route) => {
+    // Support multiple paths for one route
+    if ( Array.isArray(route.path) ) {
+        return [...rts, ...route.path.map(path => ({
+            ...route,
+            path,
+        }))];
+    }
+    return [...rts, route];
+}, [])
+.sort((a,b) => a.order - b.order)
+.concat([{ component: NotFound }]);
 
 export const restHeaders = () => {
     return {};
