@@ -27,6 +27,9 @@ if (fs.existsSync(__dirname + '/.htpasswd')) {
 // serve the files out of ./dist
 app.use(express.static(__dirname + '/dist'));
 
+app.get('*', (req, res) => {
+    res.sendfile(__dirname + '/dist/index.html');
+});
 
 // start server on the specified port and binding host
 app.listen(port, '0.0.0.0', function() {

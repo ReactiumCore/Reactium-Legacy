@@ -6,7 +6,6 @@ const gulpif           = require('gulp-if');
 const webpack          = require('webpack');
 const runSequence      = require('run-sequence');
 const browserSync      = require('browser-sync');
-const spa              = require('browser-sync-spa');
 const prefix           = require('gulp-autoprefixer');
 const less             = require('gulp-less');
 const sass             = require('gulp-sass');
@@ -133,16 +132,6 @@ gulp.task('nodemon', (done) => {
 
 // Server locally
 gulp.task('serve', () => {
-
-    let index = '/';
-        index = (typeof config.spa === 'string') ? config.spa : index;
-
-    browserSync.use(spa({
-        history: {
-            index: index,
-        }
-    }));
-
     browserSync({
         notify: false,
         timestamps: true,
