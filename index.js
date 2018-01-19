@@ -28,7 +28,7 @@ if (fs.existsSync(__dirname + '/.htpasswd')) {
 app.use(express.static(__dirname + '/dist'));
 
 app.get('*', (req, res) => {
-    res.sendfile(__dirname + '/dist/index.html');
+    res.sendFile(__dirname + '/dist/index.html');
 });
 
 // start server on the specified port and binding host

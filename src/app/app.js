@@ -7,11 +7,11 @@
  */
 
 import React from 'react';
-import thunk from 'redux-thunk';
+import thunk, { applyMiddleware } from 'redux-super-thunk';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { save as lsSave, load as lsLoad, clear as lsClear } from 'redux-localstorage-simple';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import DevTools from 'appdir/components/DevTools';
 import NotFound from 'appdir/components/NotFound';
 
