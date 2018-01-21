@@ -91,7 +91,7 @@ gulp.task('clean', (done) => {
 // Manages changes for a single file instead of a directory
 const watcher = (e) => {
     let src     = path.relative(path.resolve(__dirname), e.path);
-    let fpath    = `${config.dest.dist}/${path.relative(path.resolve(config.src.app), e.path)}`;
+    let fpath    = `${config.dest.dist}/${path.relative(path.resolve(config.src.root), e.path)}`;
     let dest    = path.normalize(path.dirname(fpath));
 
     if (fs.existsSync(fpath)) {

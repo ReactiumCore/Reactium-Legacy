@@ -59,6 +59,7 @@ module.exports = () => {
             ],
         },
         src: {
+            root: "src",
             js: [
                 "src/app/**/*",
             ],
