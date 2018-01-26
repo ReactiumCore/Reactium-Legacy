@@ -4,7 +4,7 @@
 A framework for creating React + Redux apps.
 
 ## Domain Driven Design
-Reactium follows the Domain Drive Design and aims to ease the creation of complex applications by connecting the related pieces of the software into an ever-evolving model.
+Reactium follows the Domain Driven Design and aims to ease the creation of complex applications by connecting the related pieces of the software into an ever-evolving model.
 
 DDD focuses on three core principles:
 * Focus on the core domain and domain logic.
@@ -46,7 +46,7 @@ const Hello = (props) => {
     return (
         <div>
           <h1>Hey {props.name}!</h1>
-        </div>;
+        </div>
     );
 }
 ```
