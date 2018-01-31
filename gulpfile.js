@@ -13,11 +13,18 @@ const csso             = require('gulp-csso');
 const sourcemaps       = require('gulp-sourcemaps');
 const env              = require('yargs').argv;
 const config           = require('./gulp.config')();
-const nodemon          = require('nodemon');
+const nodemon          = require('gulp-nodemon');
+const chalk          = require('chalk');
+const moment         = require('moment');
 
 // Update config from environment variables
 config.port.browsersync = (env.hasOwnProperty('APP_PORT')) ? env.APP_PORT : config.port.browsersync;
 config.env = (env.hasOwnProperty('environment')) ? env.environment : config.env;
+
+const timestamp = () => {
+    let now = moment().format('HH:mm:ss');
+    return `[${chalk.blue(now)}]`;
+};
 
 // Set webpack config after environment variables
 const webpackConfig    = require('./webpack.config')(config);
@@ -41,10 +48,6 @@ gulp.task('scripts', (done) => {
             return;
         }
 
-        if (config.env === 'development') {
-            browserSync.reload();
-        }
-
         done();
     });
 });
@@ -56,30 +59,27 @@ gulp.task('styles', () => {
     let isLess = (config.cssPreProcessor === 'less');
 
     return gulp.src(config.src.style)
-        .pipe(gulpif(isDev, sourcemaps.init()))
-        .pipe(gulpif(isSass, sass({includePaths: config.src.includes}).on('error', sass.logError)))
-        .pipe(gulpif(isLess, less({paths: config.src.includes})))
-        .pipe(prefix(config.browsers))
-        .pipe(gulpif(!isDev, csso()))
-        .pipe(gulpif(isDev, sourcemaps.write()))
-        .pipe(gulp.dest(config.dest.style))
-        .pipe(gulpif(isDev, browserSync.stream()));
+    .pipe(gulpif(isDev, sourcemaps.init()))
+    .pipe(gulpif(isSass, sass({includePaths: config.src.includes}).on('error', sass.logError)))
+    .pipe(gulpif(isLess, less({paths: config.src.includes})))
+    .pipe(prefix(config.browsers))
+    .pipe(gulpif(!isDev, csso()))
+    .pipe(gulpif(isDev, sourcemaps.write()))
+    .pipe(gulp.dest(config.dest.style))
+    .pipe(gulpif(isDev, browserSync.stream()));
 });
 
 // Copy assets
 gulp.task('assets', () => {
-    let isDev = (config.env === 'development');
     return gulp.src(config.src.assets)
-    .pipe(gulp.dest(config.dest.assets))
-    .pipe(gulpif(isDev, browserSync.stream()));
+    .pipe(gulp.dest(config.dest.assets));
 });
 
 // Copy markup
 gulp.task('markup', () => {
     let isDev = (config.env === 'development');
     return gulp.src(config.src.markup)
-    .pipe(gulp.dest(config.dest.markup))
-    .pipe(gulpif(isDev, browserSync.stream()));
+    .pipe(gulp.dest(config.dest.markup));
 });
 
 // Remove all distribution files
@@ -102,36 +102,44 @@ const watcher = (e) => {
         gulp.src(src).pipe(gulp.dest(dest));
     }
 
-    browserSync.reload();
-    console.log(`[00:00:00] File ${e.type}: /${src}`);
+    console.log(`${timestamp()} File '${chalk.cyan(e.type)}' ${src}`);
 };
 
 // nodemon -> start server and reload on change
+let serving = false;
 gulp.task('nodemon', (done) => {
     if (config.env !== 'development') { done(); return; }
 
-    let callbackCalled = false;
     nodemon({
+        delay: 200,
+        quite: true,
         watch : config.dest.dist,
         env: {
             port: config.port.proxy
         },
+        ignore: ["**/*.css", "**/*.DS_Store"],
         script: __dirname + '/index.js',
         ext: 'js ejs json jsx html css scss jpg png gif svg txt md'
     }).on('start', function () {
-        if (!callbackCalled) {
-            callbackCalled = true;
+        if (serving === false) {
             done();
+        } else {
+            browserSync.reload();
         }
     }).on('quit', () => {
         process.exit();
-    }).on('restart', function () {
-        browserSync.reload();
     });
 });
 
+gulp.task('watching', (done) => {
+    gulp.watch(config.watch.js, ['scripts']);
+    gulp.watch(config.watch.style, ['styles']);
+    gulp.watch([config.watch.markup, config.watch.assets], watcher);
+    done();
+});
+
 // Server locally
-gulp.task('serve', () => {
+gulp.task('serve', (done) => {
     browserSync({
         notify: false,
         timestamps: true,
@@ -141,23 +149,25 @@ gulp.task('serve', () => {
         proxy: `localhost:${config.port.proxy}`
     });
 
-    gulp.watch(config.watch.js, ['scripts']);
-    gulp.watch(config.watch.style, ['styles']);
-    gulp.watch([config.watch.markup, config.watch.assets], watcher);
+    serving = true;
+
+    done();
 });
 
 // Build
 gulp.task('build', (done) => {
-    runSequence(['clean'], ['assets', 'markup'], ['scripts', 'styles'], () => {
-        done();
-    });
+    runSequence(
+        ['clean'],
+        ['assets', 'markup', 'scripts', 'styles'],
+        done
+    );
 });
 
 // The default task
 gulp.task('default', (done) => {
     if (config.env === 'development') {
-        runSequence(['build'], ['nodemon'], () => {
-            gulp.start('serve');
+        runSequence(['build'], ['nodemon'], ['serve'], () => {
+            gulp.start('watching');
             done();
         });
     } else {
