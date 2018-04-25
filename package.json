@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm install && gulp --environment production",
-    "launch": "npm install && gulp --environment development"
+    "local": "npm install && gulp --environment development"
   },
   "keywords": [
     "react",
@@ -51,6 +51,7 @@
     "jshint-loader": "^0.8.4",
     "moment": "*",
     "nodemon": "^1.14.11",
+    "query-string": "^6.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
