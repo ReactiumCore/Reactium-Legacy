@@ -1,21 +1,22 @@
 
-const del              = require('del');
-const path             = require('path');
-const gulp             = require('gulp');
-const gulpif           = require('gulp-if');
-const webpack          = require('webpack');
-const runSequence      = require('run-sequence');
-const browserSync      = require('browser-sync');
-const prefix           = require('gulp-autoprefixer');
-const less             = require('gulp-less');
-const sass             = require('gulp-sass');
-const csso             = require('gulp-csso');
-const sourcemaps       = require('gulp-sourcemaps');
-const env              = require('yargs').argv;
-const config           = require('./gulp.config')();
-const nodemon          = require('gulp-nodemon');
-const chalk          = require('chalk');
-const moment         = require('moment');
+const del         = require('del');
+const path        = require('path');
+const gulp        = require('gulp');
+const gulpif      = require('gulp-if');
+const webpack     = require('webpack');
+const runSequence = require('run-sequence');
+const browserSync = require('browser-sync');
+const prefix      = require('gulp-autoprefixer');
+const less        = require('gulp-less');
+const sass        = require('gulp-sass');
+const csso        = require('gulp-csso');
+const sourcemaps  = require('gulp-sourcemaps');
+const env         = require('yargs').argv;
+const config      = require('./gulp.config')();
+const nodemon     = require('gulp-nodemon');
+const chalk       = require('chalk');
+const moment      = require('moment');
+const fs          = require('fs');
 
 // Update config from environment variables
 config.port.browsersync = (env.hasOwnProperty('APP_PORT')) ? env.APP_PORT : config.port.browsersync;
