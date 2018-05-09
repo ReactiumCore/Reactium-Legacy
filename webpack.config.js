@@ -21,9 +21,12 @@ module.exports = (config) => {
 
     plugins.push(new webpack.DefinePlugin(config.defines));
 
+    let entries = ['babel-polyfill'];
+    entries = entries.concat(Object.values(config.entries));
+
     return {
         target: 'web',
-        entry: config.entries,
+        entry: entries,
         resolve: {
             alias: {
                 appdir: config.src.appdir,
@@ -37,19 +40,15 @@ module.exports = (config) => {
         devtool: tools,
         plugins: plugins,
         module:  {
-            loaders: [
+            rules: [
                 {
-                    test           : [/\.js$/],
-                    loader         : 'babel-loader',
-                    exclude        : /node_modules/,
-                    query          : {
-                        presets    : ['react', ['env', {
-                            targets: {
-                                browsers: [config.browsers],
-                            },
-                        }]],
-                        plugins    : ['transform-object-rest-spread'],
-                    }
+                    test: [/.js$/],
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                        }
+                    ]
                 }
             ]
         }
