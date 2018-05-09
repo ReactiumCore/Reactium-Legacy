@@ -10,7 +10,7 @@ module.exports = (config) => {
     let env        = config.env || 'production';
 
     if (env !== 'development') {
-        plugins.push(new UglifyJSPlugin());
+        //plugins.push(new UglifyJSPlugin());
     } else {
         tools = 'source-map';
     }
@@ -21,9 +21,12 @@ module.exports = (config) => {
 
     plugins.push(new webpack.DefinePlugin(config.defines));
 
+    let entries = ['babel-polyfill'];
+    entries = entries.concat(Object.values(config.entries));
+
     return {
         target: 'web',
-        entry: config.entries,
+        entry: entries,
         resolve: {
             alias: {
                 appdir: config.src.appdir,
@@ -37,21 +40,41 @@ module.exports = (config) => {
         devtool: tools,
         plugins: plugins,
         module:  {
-            loaders: [
+            rules: [
                 {
-                    test           : [/\.js$/],
-                    loader         : 'babel-loader',
-                    exclude        : /node_modules/,
-                    query          : {
-                        presets    : ['react', ['env', {
-                            targets: {
-                                browsers: [config.browsers],
-                            },
-                        }]],
-                        plugins    : ['transform-object-rest-spread'],
-                    }
+                    test: [/.js$/],
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                        }
+                    ]
                 }
             ]
+            // loaders: [
+            //     {
+            //         test           : [/\.js$/],
+            //         loader         : 'babel-loader',
+            //         exclude        : /node_modules/,
+            //         query          : {
+            //             presets    : ['react', 'stage-2', ['env', {
+            //                 targets: {
+            //                     browsers: [
+            //                       "Chrome >= 59",
+            //                       "FireFox >= 44",
+            //                       "Safari >= 7",
+            //                       "Explorer 11",
+            //                       "last 4 Edge versions"
+            //                     ],
+            //                     uglify: true,
+            //                 },
+            //             }]],
+            //             plugins    : [
+            //                 'transform-object-rest-spread',
+            //             ],
+            //         }
+            //     }
+            // ]
         }
     };
 };
