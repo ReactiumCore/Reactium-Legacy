@@ -1,6 +1,5 @@
 import { actionTypes } from 'appdir/app';
-//import queryString from 'query-string';
-import queryString from 'appdir/lib/query-string';
+import queryString from 'querystring-browser';
 
 export default {
     updateRoute: (location, route = {}, params) => (dispatch, getState) => {

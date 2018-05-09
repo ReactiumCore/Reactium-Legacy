@@ -10,7 +10,7 @@ module.exports = (config) => {
     let env        = config.env || 'production';
 
     if (env !== 'development') {
-        //plugins.push(new UglifyJSPlugin());
+        plugins.push(new UglifyJSPlugin());
     } else {
         tools = 'source-map';
     }
@@ -51,30 +51,6 @@ module.exports = (config) => {
                     ]
                 }
             ]
-            // loaders: [
-            //     {
-            //         test           : [/\.js$/],
-            //         loader         : 'babel-loader',
-            //         exclude        : /node_modules/,
-            //         query          : {
-            //             presets    : ['react', 'stage-2', ['env', {
-            //                 targets: {
-            //                     browsers: [
-            //                       "Chrome >= 59",
-            //                       "FireFox >= 44",
-            //                       "Safari >= 7",
-            //                       "Explorer 11",
-            //                       "last 4 Edge versions"
-            //                     ],
-            //                     uglify: true,
-            //                 },
-            //             }]],
-            //             plugins    : [
-            //                 'transform-object-rest-spread',
-            //             ],
-            //         }
-            //     }
-            // ]
         }
     };
 };
