@@ -6,9 +6,8 @@
       "env",
       {
         "useBuiltIns": true,
-        "debug": true,
+        "debug": false,
         "targets": {
-          "ie": 11,
           "browsers": [
             ">= 1%"
           ]
